@@ -28,8 +28,8 @@ class TodayCell: BaseCollectionCell {
     fileprivate let listIndicator: UIView = {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
-        view.layer.cornerRadius = 32
-        view.widthConstraint(to: 64)
+        view.addSize(size: .init(width: 10, height: 10))
+        view.layer.cornerRadius = 5
         return view
     }()
     
@@ -40,7 +40,7 @@ class TodayCell: BaseCollectionCell {
             ])
         stackView.alignment = .center
         addSubview(stackView)
-        stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor)
+        stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 16))
         separatorView()
     }
     
