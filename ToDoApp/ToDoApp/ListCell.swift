@@ -20,7 +20,7 @@ class ListCell: UICollectionViewCell {
     fileprivate let descrtiptionLabel: UILabel = {
         let label = UILabel()
         label.text = "1 task"
-        label.font = UIFont(name: CustomFont.regular.rawValue, size: 14)
+        label.font = UIFont(name: CustomFont.regular.rawValue, size: 16)
         label.textColor = .darkGray
         return label
     }()
@@ -38,8 +38,8 @@ class ListCell: UICollectionViewCell {
             titleLabel, descrtiptionLabel
             ])
         stackView.axis = .vertical
-        stackView.alignment = .leading
         stackView.distribution = .fillProportionally
+        stackView.spacing = 10
         addSubview(stackView)
         stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 16, left: 16, bottom: 16, right: 16))
     }

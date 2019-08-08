@@ -31,12 +31,12 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width: CGFloat = view.frame.width - padding * 4
+        let width: CGFloat = view.frame.width - padding * 5
         return .init(width: width, height: 80)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return .init(top: padding, left: padding * 3, bottom: 0, right: padding)
+        return .init(top: padding, left: padding * 4, bottom: 0, right: padding)
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
