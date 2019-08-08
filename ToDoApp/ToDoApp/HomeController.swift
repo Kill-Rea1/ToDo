@@ -12,13 +12,22 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     fileprivate let cellId = "cellId"
     fileprivate let padding: CGFloat = 16
+    
+    fileprivate let todayLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.semibold.rawValue, size: 34)
+        label.text = "Today"
+        return label
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = .white
         collectionView.register(ListCell.self, forCellWithReuseIdentifier: cellId)
-        navigationItem.title = "Today"
         collectionView.delaysContentTouches = false
+        view.addSubview(todayLabel)
+        todayLabel.addContstraints(leading: view.leadingAnchor, top: view.safeAreaLayoutGuide.topAnchor, trailing: view.trailingAnchor, bottom: nil, padding: .init(top: padding, left: padding * 4, bottom: 0, right: padding), size: .init(width: 0, height: 40))
+        collectionView.contentInset = .init(top: todayLabel.frame.height + padding * 4, left: 0, bottom: 0, right: 0)
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

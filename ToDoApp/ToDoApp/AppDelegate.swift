@@ -15,22 +15,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        setupNavBar()
         window = UIWindow()
         window?.makeKeyAndVisible()
-        let rootVC = UINavigationController(rootViewController: HomeController(collectionViewLayout: UICollectionViewFlowLayout()))
-        window?.rootViewController = rootVC
+        window?.rootViewController = HomeController(collectionViewLayout: UICollectionViewFlowLayout())
         return true
-    }
-    
-    fileprivate func setupNavBar() {
-        guard let largeTitleFont = UIFont(name: CustomFont.semibold.rawValue, size: 34) else { return }
-        guard let titleFont = UIFont(name: CustomFont.semibold.rawValue, size: 17) else { return }
-        UINavigationBar.appearance().prefersLargeTitles = true
-        UINavigationBar.appearance().backgroundColor = .white
-        UINavigationBar.appearance().isTranslucent = false
-        UINavigationBar.appearance().largeTitleTextAttributes = [NSAttributedString.Key.font: largeTitleFont]
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.font: titleFont]
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
