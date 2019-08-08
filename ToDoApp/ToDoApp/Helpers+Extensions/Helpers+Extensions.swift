@@ -33,12 +33,22 @@ extension UIView {
     func addSize(size: CGSize) {
         translatesAutoresizingMaskIntoConstraints = false
         if size.width != 0 {
-            widthAnchor.constraint(equalToConstant: size.width)
+            widthAnchor.constraint(equalToConstant: size.width).isActive = true
         }
         
         if size.height != 0 {
-            heightAnchor.constraint(equalToConstant: size.height)
+            heightAnchor.constraint(equalToConstant: size.height).isActive = true
         }
+    }
+    
+    func widthConstraint(to constant: CGFloat) {
+        translatesAutoresizingMaskIntoConstraints = false
+        widthAnchor.constraint(equalToConstant: constant).isActive = true
+    }
+    
+    func heightConstraint(to constant: CGFloat) {
+        translatesAutoresizingMaskIntoConstraints = false
+        heightAnchor.constraint(equalToConstant: constant).isActive = true
     }
 }
 

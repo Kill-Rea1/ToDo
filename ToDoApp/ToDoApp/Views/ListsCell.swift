@@ -25,8 +25,8 @@ class ListsCell: BaseCollectionCell {
     override func setupViews() {
         super.setupViews()
         addSubview(listsLabel)
-        listsLabel.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: nil, padding: .init(top: padding / 2, left: padding * 4, bottom: 0, right: padding), size: .init(width: 0, height: 30))
+        listsLabel.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: nil, padding: .init(top: padding / 2, left: padding * 3, bottom: 0, right: padding), size: .init(width: 0, height: 30))
         addSubview(listController.view)
-        listController.view.addContstraints(leading: leadingAnchor, top: listsLabel.bottomAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: padding, left: padding * 4, bottom: 0, right: 0))
+        listController.view.addContstraints(leading: leadingAnchor, top: listsLabel.bottomAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: padding, left: padding * 3, bottom: 0, right: 0))
     }
 }

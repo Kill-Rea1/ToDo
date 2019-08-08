@@ -66,8 +66,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        return .init(top: padding, left: padding * 4, bottom: 0, right: padding)
-        return .init(top: padding, left: padding, bottom: 0, right: padding)
+        return .init(top: padding, left: padding, bottom: padding, right: padding)
     }
 }
 
