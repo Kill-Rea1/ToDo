@@ -46,3 +46,13 @@ enum CustomFont: String {
     case semibold = "Montserrat-SemiBold"
     case regular = "Montserrat-Regular"
 }
+
+class BaseCollectionController: UICollectionViewController {
+    init() {
+        super.init(collectionViewLayout: UICollectionViewFlowLayout())
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError()
+    }
+}

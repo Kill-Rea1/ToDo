@@ -23,7 +23,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = .white
-        collectionView.register(ListCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(ListsCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.delaysContentTouches = false
         view.addSubview(todayLabel)
         todayLabel.addContstraints(leading: view.leadingAnchor, top: view.safeAreaLayoutGuide.topAnchor, trailing: view.trailingAnchor, bottom: nil, padding: .init(top: padding, left: padding * 4, bottom: 0, right: padding), size: .init(width: 0, height: 40))
@@ -31,7 +31,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return 1
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -41,7 +41,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width: CGFloat = view.frame.width - padding * 5
-        return .init(width: width, height: 80)
+        return .init(width: width, height: 500)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

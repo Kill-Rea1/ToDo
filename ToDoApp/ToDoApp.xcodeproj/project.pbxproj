@@ -12,10 +12,12 @@
 		ED67E49222FC859600A077CF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED67E49022FC859600A077CF /* Main.storyboard */; };
 		ED67E49422FC859900A077CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED67E49322FC859900A077CF /* Assets.xcassets */; };
 		ED67E49722FC859900A077CF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED67E49522FC859900A077CF /* LaunchScreen.storyboard */; };
-		ED67E49F22FC8A5600A077CF /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E49E22FC8A5600A077CF /* ListCell.swift */; };
+		ED67E49F22FC8A5600A077CF /* ListsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E49E22FC8A5600A077CF /* ListsCell.swift */; };
 		ED67E4A122FC8B0200A077CF /* Helpers+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4A022FC8B0200A077CF /* Helpers+Extensions.swift */; };
 		ED67E4A522FCA45B00A077CF /* Montserrat-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED67E4A322FCA3E800A077CF /* Montserrat-SemiBold.otf */; };
 		ED67E4A622FCA4A400A077CF /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED67E4A422FCA40300A077CF /* Montserrat-Regular.ttf */; };
+		ED67E4AC22FCB49600A077CF /* ListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4AB22FCB49600A077CF /* ListController.swift */; };
+		ED67E4AE22FCB83400A077CF /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4AD22FCB83400A077CF /* ListCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,10 +28,12 @@
 		ED67E49322FC859900A077CF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ED67E49622FC859900A077CF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED67E49822FC859900A077CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		ED67E49E22FC8A5600A077CF /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
+		ED67E49E22FC8A5600A077CF /* ListsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsCell.swift; sourceTree = "<group>"; };
 		ED67E4A022FC8B0200A077CF /* Helpers+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Helpers+Extensions.swift"; sourceTree = "<group>"; };
 		ED67E4A322FCA3E800A077CF /* Montserrat-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.otf"; sourceTree = "<group>"; };
 		ED67E4A422FCA40300A077CF /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		ED67E4AB22FCB49600A077CF /* ListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListController.swift; sourceTree = "<group>"; };
+		ED67E4AD22FCB83400A077CF /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,15 +66,13 @@
 		ED67E48B22FC859600A077CF /* ToDoApp */ = {
 			isa = PBXGroup;
 			children = (
+				ED67E4AA22FCB40200A077CF /* Helpers+Extensions */,
+				ED67E4A822FCB3DB00A077CF /* Views */,
+				ED67E4A722FCB3BA00A077CF /* Controllers */,
 				ED67E4A222FCA3D300A077CF /* Fonts */,
+				ED67E4A922FCB3E800A077CF /* Support Files */,
 				ED67E48C22FC859600A077CF /* AppDelegate.swift */,
-				ED67E48E22FC859600A077CF /* HomeController.swift */,
 				ED67E49022FC859600A077CF /* Main.storyboard */,
-				ED67E49322FC859900A077CF /* Assets.xcassets */,
-				ED67E49522FC859900A077CF /* LaunchScreen.storyboard */,
-				ED67E49822FC859900A077CF /* Info.plist */,
-				ED67E49E22FC8A5600A077CF /* ListCell.swift */,
-				ED67E4A022FC8B0200A077CF /* Helpers+Extensions.swift */,
 			);
 			path = ToDoApp;
 			sourceTree = "<group>";
@@ -82,6 +84,42 @@
 				ED67E4A422FCA40300A077CF /* Montserrat-Regular.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		ED67E4A722FCB3BA00A077CF /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				ED67E48E22FC859600A077CF /* HomeController.swift */,
+				ED67E4AB22FCB49600A077CF /* ListController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		ED67E4A822FCB3DB00A077CF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				ED67E49E22FC8A5600A077CF /* ListsCell.swift */,
+				ED67E4AD22FCB83400A077CF /* ListCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		ED67E4A922FCB3E800A077CF /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				ED67E49522FC859900A077CF /* LaunchScreen.storyboard */,
+				ED67E49822FC859900A077CF /* Info.plist */,
+				ED67E49322FC859900A077CF /* Assets.xcassets */,
+			);
+			path = "Support Files";
+			sourceTree = "<group>";
+		};
+		ED67E4AA22FCB40200A077CF /* Helpers+Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				ED67E4A022FC8B0200A077CF /* Helpers+Extensions.swift */,
+			);
+			path = "Helpers+Extensions";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,8 +195,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED67E49F22FC8A5600A077CF /* ListCell.swift in Sources */,
+				ED67E49F22FC8A5600A077CF /* ListsCell.swift in Sources */,
+				ED67E4AC22FCB49600A077CF /* ListController.swift in Sources */,
 				ED67E4A122FC8B0200A077CF /* Helpers+Extensions.swift in Sources */,
+				ED67E4AE22FCB83400A077CF /* ListCell.swift in Sources */,
 				ED67E48F22FC859600A077CF /* HomeController.swift in Sources */,
 				ED67E48D22FC859600A077CF /* AppDelegate.swift in Sources */,
 			);
@@ -308,7 +348,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CW6J7PGNU5;
-				INFOPLIST_FILE = ToDoApp/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ToDoApp/Support Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -327,7 +367,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CW6J7PGNU5;
-				INFOPLIST_FILE = ToDoApp/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ToDoApp/Support Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
