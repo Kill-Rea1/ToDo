@@ -13,6 +13,12 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     fileprivate let todaysCellId = "todaysCell"
     fileprivate let listsCellId = "listsCell"
     fileprivate let padding: CGFloat = 16
+    fileprivate let addButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(#imageLiteral(resourceName: "icons8-add-100").withRenderingMode(.alwaysOriginal), for: .normal)
+        button.addTarget(self, action: #selector(handleAdd), for: .touchUpInside)
+        return button
+    }()
     
     fileprivate lazy var topView: UIView = {
         let view = UIView()
@@ -35,6 +41,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     fileprivate func setupViews() {
         view.addSubview(topView)
         topView.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.safeAreaLayoutGuide.topAnchor, padding: .init(top: 0, left: 0, bottom: -(padding * 5), right: 0))
+        view.addSubview(addButton)
+        addButton.addContstraints(leading: nil, top: nil, trailing: view.trailingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, padding: .init(top: 0, left: 0, bottom: padding, right: padding), size: .init(width: 76, height: 76))
     }
     
     fileprivate func setupCollectionView() {
@@ -44,6 +52,17 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView.delaysContentTouches = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.contentInset = .init(top: padding * 5, left: 0, bottom: 0, right: 0)
+    }
+    
+    @objc fileprivate func handleAdd(sender: UIButton) {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8, options: .curveEaseOut, animations: {
+            if sender.transform == .identity {
+                let angle: CGFloat = 45 * CGFloat.pi / 180
+                sender.transform = CGAffineTransform(rotationAngle: angle)
+            } else {
+                sender.transform = .identity
+            }
+        })
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
