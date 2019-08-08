@@ -18,7 +18,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView.backgroundColor = .white
         collectionView.register(ListCell.self, forCellWithReuseIdentifier: cellId)
         navigationItem.title = "Today"
-        
+        collectionView.delaysContentTouches = false
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -37,11 +37,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return .init(top: padding, left: padding * 4, bottom: 0, right: padding)
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-        cell.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
     }
 }
 
