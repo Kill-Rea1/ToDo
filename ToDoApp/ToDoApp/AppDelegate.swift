@@ -24,9 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     fileprivate func setupNavBar() {
+        guard let largeTitleFont = UIFont(name: CustomFont.semibold.rawValue, size: 34) else { return }
+        guard let titleFont = UIFont(name: CustomFont.semibold.rawValue, size: 17) else { return }
         UINavigationBar.appearance().prefersLargeTitles = true
         UINavigationBar.appearance().backgroundColor = .white
         UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().largeTitleTextAttributes = [NSAttributedString.Key.font: largeTitleFont]
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.font: titleFont]
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

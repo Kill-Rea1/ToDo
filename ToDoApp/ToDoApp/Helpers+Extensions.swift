@@ -41,3 +41,8 @@ extension UIView {
         }
     }
 }
+
+enum CustomFont: String {
+    case semibold = "Montserrat-SemiBold"
+    case regular = "Montserrat-Regular"
+}
