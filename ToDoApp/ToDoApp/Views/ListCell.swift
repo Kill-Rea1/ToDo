@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ListCell: UICollectionViewCell {
+class ListCell: BaseCollectionCell {
     
     fileprivate let titleLabel: UILabel = {
         let label = UILabel()
@@ -33,14 +33,10 @@ class ListCell: UICollectionViewCell {
         }
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override func setupViews() {
+        super.setupViews()
         backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         layer.cornerRadius = 14
-        setupViews()
-    }
-    
-    fileprivate func setupViews() {
         let stackView = UIStackView(arrangedSubviews: [
             titleLabel, descrtiptionLabel
             ])
@@ -49,9 +45,5 @@ class ListCell: UICollectionViewCell {
         stackView.spacing = 10
         addSubview(stackView)
         stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 16, left: 16, bottom: 16, right: 16))
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError()
     }
 }

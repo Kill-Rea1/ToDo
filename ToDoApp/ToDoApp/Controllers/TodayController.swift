@@ -1,5 +1,5 @@
 //
-//  ListController.swift
+//  TodayController.swift
 //  ToDoApp
 //
 //  Created by Кирилл Иванов on 08/08/2019.
@@ -8,28 +8,28 @@
 
 import UIKit
 
-class ListController: BaseCollectionController, UICollectionViewDelegateFlowLayout {
+class TodayController: BaseCollectionController, UICollectionViewDelegateFlowLayout {
     
-    fileprivate let cellId = "listCell"
+    fileprivate let todayCellId = "todayCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = .white
-        collectionView.register(ListCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: todayCellId)
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.delaysContentTouches = false
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return 5
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: todayCellId, for: indexPath)
+        cell.backgroundColor = .blue
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return .init(width: view.frame.width, height: 80)
+        return .init(width: view.frame.width, height: 50)
     }
 }

@@ -10,42 +10,64 @@ import UIKit
 
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
-    fileprivate let cellId = "cellId"
+    fileprivate let todaysCellId = "todaysCell"
+    fileprivate let listsCellId = "listsCell"
     fileprivate let padding: CGFloat = 16
     
-    fileprivate let todayLabel: UILabel = {
+    fileprivate lazy var topView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
         let label = UILabel()
         label.font = UIFont(name: CustomFont.semibold.rawValue, size: 34)
         label.text = "Today"
-        return label
+        label.backgroundColor = .white
+        view.addSubview(label)
+        label.addContstraints(leading: view.leadingAnchor, top: nil, trailing: view.trailingAnchor, bottom: view.bottomAnchor, padding: .init(top: 0, left: padding * 4, bottom: padding, right: 0))
+        return view
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupViews()
+        setupCollectionView()
+    }
+    
+    fileprivate func setupViews() {
+        view.addSubview(topView)
+        topView.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.safeAreaLayoutGuide.topAnchor, padding: .init(top: 0, left: 0, bottom: -(padding * 5), right: 0))
+    }
+    
+    fileprivate func setupCollectionView() {
         collectionView.backgroundColor = .white
-        collectionView.register(ListsCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(TodaysCell.self, forCellWithReuseIdentifier: todaysCellId)
+        collectionView.register(ListsCell.self, forCellWithReuseIdentifier: listsCellId)
         collectionView.delaysContentTouches = false
-        view.addSubview(todayLabel)
-        todayLabel.addContstraints(leading: view.leadingAnchor, top: view.safeAreaLayoutGuide.topAnchor, trailing: view.trailingAnchor, bottom: nil, padding: .init(top: padding, left: padding * 4, bottom: 0, right: padding), size: .init(width: 0, height: 40))
-        collectionView.contentInset = .init(top: todayLabel.frame.height + padding * 4, left: 0, bottom: 0, right: 0)
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.contentInset = .init(top: padding * 5, left: 0, bottom: 0, right: 0)
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return 2
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        if indexPath.item == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: todaysCellId, for: indexPath)
+            return cell
+        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: listsCellId, for: indexPath)
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width: CGFloat = view.frame.width - padding * 5
-        return .init(width: width, height: 500)
+        let width: CGFloat = view.frame.width - padding * 2
+        let height: CGFloat = indexPath.item == 0 ? 250 : 500
+        return .init(width: width, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return .init(top: padding, left: padding * 4, bottom: 0, right: padding)
+//        return .init(top: padding, left: padding * 4, bottom: 0, right: padding)
+        return .init(top: padding, left: padding, bottom: 0, right: padding)
     }
 }
 

@@ -8,11 +8,13 @@
 
 import UIKit
 
-class ListsCell: UICollectionViewCell {
+class ListsCell: BaseCollectionCell {
+    
+    fileprivate let padding: CGFloat = 16
     
     fileprivate let listsLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: CustomFont.regular.rawValue, size: 20)
+        label.font = UIFont(name: CustomFont.regular.rawValue, size: 22)
         label.text = "Lists"
         label.textColor = .lightGray
         return label
@@ -20,19 +22,11 @@ class ListsCell: UICollectionViewCell {
     
     fileprivate let listController = ListController()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupViews()
-    }
-    
-    fileprivate func setupViews() {
+    override func setupViews() {
+        super.setupViews()
         addSubview(listsLabel)
-        listsLabel.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: nil, padding: .init(top: 8, left: 0, bottom: 0, right: 16), size: .init(width: 0, height: 30))
+        listsLabel.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: nil, padding: .init(top: padding / 2, left: padding * 4, bottom: 0, right: padding), size: .init(width: 0, height: 30))
         addSubview(listController.view)
-        listController.view.addContstraints(leading: leadingAnchor, top: listsLabel.bottomAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 16, left: 0, bottom: 0, right: 0))
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError()
+        listController.view.addContstraints(leading: leadingAnchor, top: listsLabel.bottomAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: padding, left: padding * 4, bottom: 0, right: 0))
     }
 }
