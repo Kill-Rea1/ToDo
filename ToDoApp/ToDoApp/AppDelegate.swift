@@ -15,8 +15,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        setupNavBar()
+        window = UIWindow()
+        window?.makeKeyAndVisible()
+        let rootVC = UINavigationController(rootViewController: HomeController(collectionViewLayout: UICollectionViewFlowLayout()))
+        window?.rootViewController = rootVC
         return true
+    }
+    
+    fileprivate func setupNavBar() {
+        UINavigationBar.appearance().prefersLargeTitles = true
+        UINavigationBar.appearance().backgroundColor = .white
+        UINavigationBar.appearance().isTranslucent = false
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

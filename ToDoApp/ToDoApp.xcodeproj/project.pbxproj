@@ -8,20 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		ED67E48D22FC859600A077CF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E48C22FC859600A077CF /* AppDelegate.swift */; };
-		ED67E48F22FC859600A077CF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E48E22FC859600A077CF /* ViewController.swift */; };
+		ED67E48F22FC859600A077CF /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E48E22FC859600A077CF /* HomeController.swift */; };
 		ED67E49222FC859600A077CF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED67E49022FC859600A077CF /* Main.storyboard */; };
 		ED67E49422FC859900A077CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED67E49322FC859900A077CF /* Assets.xcassets */; };
 		ED67E49722FC859900A077CF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED67E49522FC859900A077CF /* LaunchScreen.storyboard */; };
+		ED67E49F22FC8A5600A077CF /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E49E22FC8A5600A077CF /* ListCell.swift */; };
+		ED67E4A122FC8B0200A077CF /* Helpers+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4A022FC8B0200A077CF /* Helpers+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		ED67E48922FC859600A077CF /* ToDoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED67E48C22FC859600A077CF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		ED67E48E22FC859600A077CF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		ED67E48E22FC859600A077CF /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		ED67E49122FC859600A077CF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ED67E49322FC859900A077CF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ED67E49622FC859900A077CF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED67E49822FC859900A077CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ED67E49E22FC8A5600A077CF /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
+		ED67E4A022FC8B0200A077CF /* Helpers+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Helpers+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,11 +59,13 @@
 			isa = PBXGroup;
 			children = (
 				ED67E48C22FC859600A077CF /* AppDelegate.swift */,
-				ED67E48E22FC859600A077CF /* ViewController.swift */,
+				ED67E48E22FC859600A077CF /* HomeController.swift */,
 				ED67E49022FC859600A077CF /* Main.storyboard */,
 				ED67E49322FC859900A077CF /* Assets.xcassets */,
 				ED67E49522FC859900A077CF /* LaunchScreen.storyboard */,
 				ED67E49822FC859900A077CF /* Info.plist */,
+				ED67E49E22FC8A5600A077CF /* ListCell.swift */,
+				ED67E4A022FC8B0200A077CF /* Helpers+Extensions.swift */,
 			);
 			path = ToDoApp;
 			sourceTree = "<group>";
@@ -135,7 +141,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED67E48F22FC859600A077CF /* ViewController.swift in Sources */,
+				ED67E49F22FC8A5600A077CF /* ListCell.swift in Sources */,
+				ED67E4A122FC8B0200A077CF /* Helpers+Extensions.swift in Sources */,
+				ED67E48F22FC859600A077CF /* HomeController.swift in Sources */,
 				ED67E48D22FC859600A077CF /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
