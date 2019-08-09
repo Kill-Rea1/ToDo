@@ -15,7 +15,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     fileprivate let padding: CGFloat = 16
     fileprivate let addButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "add").withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "add"), for: .normal)
+        button.tintColor = .blue
         button.addTarget(self, action: #selector(handleAdd), for: .touchUpInside)
         return button
     }()
@@ -105,24 +106,20 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     var startingPosition: CGRect!
 }
 
-extension HomeController: ListControllerDelegate {
+extension HomeController: ListControllerDelegate, ListFullscreenControllerDelegate {
     func didSelectList(at position: CGRect) {
         startingPosition = position
         listFullscreen = ListFullscreenController()
+        listFullscreen.delegate = self
         guard let listFullscreenView = listFullscreen.view else { return }
         listFullscreenView.clipsToBounds = true
         listFullscreenView.layer.cornerRadius = 14
-        listFullscreenView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
         view.addSubview(listFullscreenView)
         addChild(listFullscreen)
         anchoredConstraints = listFullscreenView.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: nil, bottom: nil, padding: .init(top: position.origin.y, left: position.origin.x, bottom: 0, right: 0), size: .init(width: position.width, height: position.height))
         self.view.layoutIfNeeded()
         view.bringSubviewToFront(addButton)
         animate(to: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
-    }
-    
-    @objc func handleTap(gesture: UITapGestureRecognizer) {
-        animate(to: startingPosition, dismissal: true)
     }
     
     func animate(to position: CGRect, dismissal: Bool = false) {
@@ -138,6 +135,10 @@ extension HomeController: ListControllerDelegate {
                 self.listFullscreen.removeFromParent()
             }
         }
+    }
+    
+    func didSizeToMini() {
+        animate(to: startingPosition, dismissal: true)
     }
 }
 

@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol ListFullscreenControllerDelegate {
+    func didSizeToMini()
+}
+
 class ListFullscreenController: UIViewController {
     
     fileprivate let listCellId = "listCell"
@@ -15,8 +19,18 @@ class ListFullscreenController: UIViewController {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "close"), for: .normal)
         button.tintColor = .black
+        button.addTarget(self, action: #selector(handleClose), for: .touchUpInside)
         return button
     }()
+    var delegate: ListFullscreenControllerDelegate?
+    fileprivate let headerView = HeaderView()
+    
+    @objc fileprivate func handleClose(sender: UIButton) {
+        sender.isHidden = true
+        headerView.headerLabel.font = UIFont(name: CustomFont.semibold.rawValue, size: 20)
+        headerView.descriptionLabel.font = UIFont(name: CustomFont.regular.rawValue, size: 16)
+        delegate?.didSizeToMini()
+    }
     
     let tableView = UITableView(frame: .zero, style: .plain)
     
@@ -32,7 +46,10 @@ class ListFullscreenController: UIViewController {
         tableView.showsVerticalScrollIndicator = false
         let height = UIApplication.shared.statusBarFrame.height
         tableView.contentInset = .init(top: 0, left: 0, bottom: height, right: 0)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: listCellId)
+        tableView.register(ListFullscreenCell.self, forCellReuseIdentifier: listCellId)
+        tableView.delaysContentTouches = false
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 600
     }
     
     fileprivate func setupButtons() {
@@ -50,7 +67,7 @@ class ListFullscreenController: UIViewController {
 
 extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -59,7 +76,7 @@ extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return HeaderView()
+        return headerView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -72,18 +89,17 @@ class HeaderView: UIView {
     fileprivate let headerLabel: UILabel = {
         let label = UILabel()
         label.text = "Inbox"
-        label.font = UIFont(name: CustomFont.semibold.rawValue, size: 20)
+        label.font = UIFont(name: CustomFont.semibold.rawValue, size: 28)
         return label
     }()
     
     fileprivate let descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "1 task"
-        label.font = UIFont(name: CustomFont.regular.rawValue, size: 16)
+        label.font = UIFont(name: CustomFont.regular.rawValue, size: 22)
         label.textColor = .darkGray
         return label
     }()
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
