@@ -10,10 +10,11 @@ import UIKit
 
 class TodayCell: BaseCollectionCell {
     
-    fileprivate let checkBoxButton: UIButton = {
+    public let checkBoxButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "unchecked").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addSize(size: .init(width: 48, height: 48))
+//        button.addTarget(self, action: #selector(handleTap), for: .touchUpInside)xr
         return button
     }()
     

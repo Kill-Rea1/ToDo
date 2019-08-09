@@ -83,4 +83,14 @@ extension AddController: UITableViewDelegate, UITableViewDataSource {
         cell.imageView?.tintColor = #colorLiteral(red: 0.0002782579104, green: 0.4252260029, blue: 0.9999930263, alpha: 1)
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            let navController = UINavigationController(rootViewController: NewTaskController())
+            delegate?.dismiss()
+            present(navController, animated: true)
+        } else {
+            return
+        }
+    }
 }
