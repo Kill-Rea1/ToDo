@@ -101,33 +101,40 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return .init(top: padding, left: 0, bottom: -padding, right: 0)
     }
+    
+    var redView: UIView!
+    var startingPosition: CGRect!
 }
 
 extension HomeController: ListControllerDelegate {
     func didSelectList(at position: CGRect) {
-        let redView = UIView()
+        startingPosition = position
+        redView = UIView()
         redView.backgroundColor = .red
         redView.layer.cornerRadius = 14
         redView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
         view.addSubview(redView)
         anchoredConstraints = redView.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: nil, bottom: nil, padding: .init(top: position.origin.y, left: position.origin.x, bottom: 0, right: 0), size: .init(width: position.width, height: position.height))
         self.view.layoutIfNeeded()
-        animateFullScreen()
+        animate(to: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
     }
     
     @objc func handleTap(gesture: UITapGestureRecognizer) {
-        guard let redView = gesture.view else { return }
-        redView.removeFromSuperview()
+        animate(to: startingPosition, dismissal: true)
     }
     
-    func animateFullScreen() {
-        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.7, options: .curveEaseOut, animations: {
-            self.anchoredConstraints?.top?.constant = 0
-            self.anchoredConstraints?.leading?.constant = 0
-            self.anchoredConstraints?.width?.constant = self.view.frame.width
-            self.anchoredConstraints?.height?.constant = self.view.frame.height
+    func animate(to position: CGRect, dismissal: Bool = false) {
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseOut, animations: {
+            self.anchoredConstraints?.top?.constant = position.origin.y
+            self.anchoredConstraints?.leading?.constant = position.origin.x
+            self.anchoredConstraints?.width?.constant = position.width
+            self.anchoredConstraints?.height?.constant = position.height
             self.view.layoutIfNeeded()
-        }, completion: nil)
+        }) { (_) in
+            if dismissal {
+                self.redView.removeFromSuperview()
+            }
+        }
     }
 }
 
