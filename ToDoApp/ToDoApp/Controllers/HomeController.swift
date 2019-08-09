@@ -99,22 +99,23 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return .init(top: padding, left: 0, bottom: padding, right: 0)
+        return .init(top: padding, left: padding, bottom: padding, right: padding)
     }
-    
-    var redView: UIView!
+    var listFullscreen: ListFullscreenController!
     var startingPosition: CGRect!
 }
 
 extension HomeController: ListControllerDelegate {
     func didSelectList(at position: CGRect) {
         startingPosition = position
-        redView = UIView()
-        redView.backgroundColor = .red
-        redView.layer.cornerRadius = 14
-        redView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
-        view.addSubview(redView)
-        anchoredConstraints = redView.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: nil, bottom: nil, padding: .init(top: position.origin.y, left: position.origin.x, bottom: 0, right: 0), size: .init(width: position.width, height: position.height))
+        listFullscreen = ListFullscreenController()
+        guard let listFullscreenView = listFullscreen.view else { return }
+        listFullscreenView.clipsToBounds = true
+        listFullscreenView.layer.cornerRadius = 14
+        listFullscreenView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
+        view.addSubview(listFullscreenView)
+        addChild(listFullscreen)
+        anchoredConstraints = listFullscreenView.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: nil, bottom: nil, padding: .init(top: position.origin.y, left: position.origin.x, bottom: 0, right: 0), size: .init(width: position.width, height: position.height))
         self.view.layoutIfNeeded()
         animate(to: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
     }
@@ -129,11 +130,11 @@ extension HomeController: ListControllerDelegate {
             self.anchoredConstraints?.leading?.constant = position.origin.x
             self.anchoredConstraints?.width?.constant = position.width
             self.anchoredConstraints?.height?.constant = position.height
-            self.redView.layer.cornerRadius = dismissal ? 14 : 0
             self.view.layoutIfNeeded()
         }) { (_) in
             if dismissal {
-                self.redView.removeFromSuperview()
+                self.listFullscreen.view.removeFromSuperview()
+                self.listFullscreen.removeFromParent()
             }
         }
     }
