@@ -17,26 +17,26 @@ class NewTaskController: UIViewController {
         return button
     }()
     
-    let taskTextView: UITextView = {
-        let tv = UITextView()
-        tv.text = "qermwefpo"
-        tv.font = UIFont(name: CustomFont.regular.rawValue, size: 20)
-        tv.heightAnchor.constraint(greaterThanOrEqualToConstant: 80).isActive = true
-        tv.isScrollEnabled = false
-        return tv
+    let taskTextView: UITextField = {
+        let tf = UITextField()
+        tf.text = "qermwefpo"
+        tf.font = UIFont(name: CustomFont.regular.rawValue, size: 20)
+        tf.heightAnchor.constraint(greaterThanOrEqualToConstant: 80).isActive = true
+        tf.autocorrectionType = .no
+        return tf
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        createToolBar()
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(handleDone))
-        taskTextView.becomeFirstResponder()
-        
+//        taskTextView.becomeFirstResponder()
         let stackView = UIStackView(arrangedSubviews: [checkBoxButton, taskTextView])
         stackView.alignment = .top
         stackView.autoresizingMask = .flexibleHeight
-        stackView.spacing = 16
+        stackView.spacing = 8
         view.addSubview(stackView)
         stackView.addContstraints(leading: view.leadingAnchor, top: view.safeAreaLayoutGuide.topAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, bottom: nil, padding: .init(top: 16, left: 0, bottom: 0, right: 16))
         stackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 80).isActive = true
@@ -48,5 +48,10 @@ class NewTaskController: UIViewController {
     
     @objc fileprivate func handleDone() {
         dismiss(animated: true)
+    }
+    
+    fileprivate func createToolBar() {
+        let accessoryView = CustomAccessoryView(frame: .init(x: 0, y: 0, width: view.frame.width, height: 100))
+        taskTextView.inputAccessoryView = accessoryView
     }
 }

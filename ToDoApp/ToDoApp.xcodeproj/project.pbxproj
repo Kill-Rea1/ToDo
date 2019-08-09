@@ -26,7 +26,7 @@
 		ED67E4BA22FDDE9E00A077CF /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4B922FDDE9E00A077CF /* HeaderView.swift */; };
 		ED67E4BC22FDEE1B00A077CF /* AddController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4BB22FDEE1B00A077CF /* AddController.swift */; };
 		ED67E4BE22FDFB3700A077CF /* NewTaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4BD22FDFB3700A077CF /* NewTaskController.swift */; };
-		ED67E4C022FDFDB300A077CF /* NewTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4BF22FDFDB300A077CF /* NewTaskCell.swift */; };
+		ED67E4C322FE1C4200A077CF /* CustomAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4C222FE1C4200A077CF /* CustomAccessoryView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,7 +51,7 @@
 		ED67E4B922FDDE9E00A077CF /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		ED67E4BB22FDEE1B00A077CF /* AddController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddController.swift; sourceTree = "<group>"; };
 		ED67E4BD22FDFB3700A077CF /* NewTaskController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskController.swift; sourceTree = "<group>"; };
-		ED67E4BF22FDFDB300A077CF /* NewTaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskCell.swift; sourceTree = "<group>"; };
+		ED67E4C222FE1C4200A077CF /* CustomAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAccessoryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,7 +126,7 @@
 				ED67E4B322FCBD4E00A077CF /* TodayCell.swift */,
 				ED67E4B722FDD1B900A077CF /* ListFullscreenCell.swift */,
 				ED67E4B922FDDE9E00A077CF /* HeaderView.swift */,
-				ED67E4BF22FDFDB300A077CF /* NewTaskCell.swift */,
+				ED67E4C222FE1C4200A077CF /* CustomAccessoryView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -234,7 +234,7 @@
 				ED67E4BA22FDDE9E00A077CF /* HeaderView.swift in Sources */,
 				ED67E4AE22FCB83400A077CF /* ListCell.swift in Sources */,
 				ED67E4B222FCBC7C00A077CF /* TodayController.swift in Sources */,
-				ED67E4C022FDFDB300A077CF /* NewTaskCell.swift in Sources */,
+				ED67E4C322FE1C4200A077CF /* CustomAccessoryView.swift in Sources */,
 				ED67E48F22FC859600A077CF /* HomeController.swift in Sources */,
 				ED67E48D22FC859600A077CF /* AppDelegate.swift in Sources */,
 			);
