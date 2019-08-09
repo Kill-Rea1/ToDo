@@ -99,7 +99,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return .init(top: padding, left: 0, bottom: -padding, right: 0)
+        return .init(top: padding, left: 0, bottom: paddin, right: 0)
     }
     
     var redView: UIView!
