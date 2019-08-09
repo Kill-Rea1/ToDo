@@ -21,7 +21,7 @@ class ListFullscreenCell: UITableViewCell {
         let label = UILabel()
         label.text = "REALLY LONG TASK WHICH WOULD BREAK MY AUTO SIZING MAY BE I BELIVE IT WON'T HAPPEN"
         label.numberOfLines = 0
-        label.font = UIFont(name: CustomFont.semibold.rawValue, size: 14)
+        label.font = UIFont(name: CustomFont.semibold.rawValue, size: 15)
         return label
     }()
     
@@ -34,7 +34,7 @@ class ListFullscreenCell: UITableViewCell {
         stackView.alignment = .center
         stackView.spacing = 8
         addSubview(stackView)
-        stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16))
+        stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 16, left: 16, bottom: 16, right: 16))
         separatorView()
     }
     

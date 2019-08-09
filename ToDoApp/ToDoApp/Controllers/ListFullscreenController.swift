@@ -29,6 +29,7 @@ class ListFullscreenController: UIViewController {
         sender.isHidden = true
         headerView.headerLabel.font = UIFont(name: CustomFont.semibold.rawValue, size: 20)
         headerView.descriptionLabel.font = UIFont(name: CustomFont.regular.rawValue, size: 16)
+        
         delegate?.didSizeToMini()
     }
     
@@ -71,7 +72,7 @@ extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: listCellId, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: listCellId, for: indexPath) as! ListFullscreenCell
         return cell
     }
     
@@ -96,7 +97,7 @@ class HeaderView: UIView {
     fileprivate let descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "1 task"
-        label.font = UIFont(name: CustomFont.regular.rawValue, size: 22)
+        label.font = UIFont(name: CustomFont.regular.rawValue, size: 21)
         label.textColor = .darkGray
         return label
     }()
