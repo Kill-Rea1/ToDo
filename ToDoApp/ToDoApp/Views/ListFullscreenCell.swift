@@ -42,7 +42,7 @@ class ListFullscreenCell: UITableViewCell {
         let separatorView = UIView()
         addSubview(separatorView)
         separatorView.backgroundColor = UIColor(white: 0.6, alpha: 0.5)
-        separatorView.addContstraints(leading: leadingAnchor, top: nil, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 0, left: 60, bottom: 0, right: 0), size: .init(width: 0, height: 0.5))
+        separatorView.addContstraints(leading: leadingAnchor, top: nil, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 0, left: 72, bottom: 0, right: 0), size: .init(width: 0, height: 0.5))
     }
     
     required init?(coder aDecoder: NSCoder) {

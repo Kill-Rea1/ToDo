@@ -22,7 +22,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }()
     fileprivate var anchoredConstraints: AnchoredConstraints!
     fileprivate let items = 5
-    
+    fileprivate var addController: AddController!
+    fileprivate var isShowingAdd = false
     fileprivate lazy var topView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -46,6 +47,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         topView.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.safeAreaLayoutGuide.topAnchor, padding: .init(top: 0, left: 0, bottom: -(padding * 5), right: 0))
         view.addSubview(addButton)
         addButton.addContstraints(leading: nil, top: nil, trailing: view.trailingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, padding: .init(top: 0, left: 0, bottom: padding, right: padding), size: .init(width: 76, height: 76))
+        
     }
     
     fileprivate func setupCollectionView() {
@@ -58,14 +60,35 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     @objc fileprivate func handleAdd(sender: UIButton) {
+        if !isShowingAdd {
+            addController = AddController()
+            addController.delegate = self
+            view.addSubview(addController.view)
+            addChild(addController)
+            addController.view.frame = view.frame
+            addController.view.alpha = 0
+        }
+        
+        view.bringSubviewToFront(sender)
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8, options: .curveEaseOut, animations: {
-            if sender.transform == .identity {
+            
+            if self.isShowingAdd {
+                sender.transform = .identity
+                self.addController.view.alpha = 0
+            } else {
                 let angle: CGFloat = 45 * CGFloat.pi / 180
                 sender.transform = CGAffineTransform(rotationAngle: angle)
-            } else {
-                sender.transform = .identity
+                self.addController.view.alpha = 1
             }
-        })
+        }) { (_) in
+            if self.isShowingAdd {
+                self.addController.view.removeFromSuperview()
+                self.addController.removeFromParent()
+                self.isShowingAdd = false
+            } else {
+                self.isShowingAdd = true
+            }
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -106,7 +129,12 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     var startingPosition: CGRect!
 }
 
-extension HomeController: ListControllerDelegate, ListFullscreenControllerDelegate, UIGestureRecognizerDelegate {
+extension HomeController: ListControllerDelegate, ListFullscreenControllerDelegate, UIGestureRecognizerDelegate, AddControllerDelegate {
+    
+    func dismiss() {
+        handleAdd(sender: addButton)
+    }
+    
     func didSelectList(at position: CGRect) {
         startingPosition = position
         let listFullscreenView = setupListFullscreen()

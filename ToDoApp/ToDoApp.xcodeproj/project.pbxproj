@@ -24,6 +24,7 @@
 		ED67E4B622FDBD6400A077CF /* ListFullscreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4B522FDBD6400A077CF /* ListFullscreenController.swift */; };
 		ED67E4B822FDD1B900A077CF /* ListFullscreenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4B722FDD1B900A077CF /* ListFullscreenCell.swift */; };
 		ED67E4BA22FDDE9E00A077CF /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4B922FDDE9E00A077CF /* HeaderView.swift */; };
+		ED67E4BC22FDEE1B00A077CF /* AddController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4BB22FDEE1B00A077CF /* AddController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		ED67E4B522FDBD6400A077CF /* ListFullscreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListFullscreenController.swift; sourceTree = "<group>"; };
 		ED67E4B722FDD1B900A077CF /* ListFullscreenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListFullscreenCell.swift; sourceTree = "<group>"; };
 		ED67E4B922FDDE9E00A077CF /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		ED67E4BB22FDEE1B00A077CF /* AddController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 				ED67E4AB22FCB49600A077CF /* ListController.swift */,
 				ED67E4B122FCBC7C00A077CF /* TodayController.swift */,
 				ED67E4B522FDBD6400A077CF /* ListFullscreenController.swift */,
+				ED67E4BB22FDEE1B00A077CF /* AddController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 				ED67E4B822FDD1B900A077CF /* ListFullscreenCell.swift in Sources */,
 				ED67E4B022FCBB7500A077CF /* TodaysCell.swift in Sources */,
 				ED67E4B622FDBD6400A077CF /* ListFullscreenController.swift in Sources */,
+				ED67E4BC22FDEE1B00A077CF /* AddController.swift in Sources */,
 				ED67E4B422FCBD4E00A077CF /* TodayCell.swift in Sources */,
 				ED67E4AC22FCB49600A077CF /* ListController.swift in Sources */,
 				ED67E4A122FC8B0200A077CF /* Helpers+Extensions.swift in Sources */,
