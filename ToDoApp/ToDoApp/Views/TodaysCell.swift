@@ -10,7 +10,7 @@ import UIKit
 
 class TodaysCell: BaseCollectionCell {
     
-    fileprivate let todayController = TodayController()
+    public let todayController = TodayController()
     
     override func setupViews() {
         super.setupViews()

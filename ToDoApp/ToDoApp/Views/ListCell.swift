@@ -44,6 +44,6 @@ class ListCell: BaseCollectionCell {
         stackView.distribution = .fillProportionally
         stackView.spacing = 10
         addSubview(stackView)
-        stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 16, left: 16, bottom: 16, right: 16))
+        stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 16, left: 16, bottom: 16, right: 0))
     }
 }

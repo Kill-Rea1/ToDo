@@ -15,10 +15,12 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     fileprivate let padding: CGFloat = 16
     fileprivate let addButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "icons8-add-100").withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "add").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handleAdd), for: .touchUpInside)
         return button
     }()
+    
+    fileprivate let items = 3
     
     fileprivate lazy var topView: UIView = {
         let view = UIView()
@@ -51,7 +53,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView.register(ListsCell.self, forCellWithReuseIdentifier: listsCellId)
         collectionView.delaysContentTouches = false
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.contentInset = .init(top: padding * 5, left: 0, bottom: 0, right: 0)
+        collectionView.contentInset.top = padding * 5
     }
     
     @objc fileprivate func handleAdd(sender: UIButton) {
@@ -74,18 +76,29 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: todaysCellId, for: indexPath)
             return cell
         }
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: listsCellId, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: listsCellId, for: indexPath) as! ListsCell
+        cell.listController.items = items
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width: CGFloat = view.frame.width - padding * 2
-        let height: CGFloat = indexPath.item == 0 ? 250 : 500
-        return .init(width: width, height: height)
+        var size: CGSize
+        if indexPath.item == 0 {
+            let dummyCell = TodaysCell(frame: .init(x: 0, y: 0, width: width, height: 1000))
+            size = dummyCell.todayController.collectionViewLayout.collectionViewContentSize
+        } else {
+            let dummyCell = ListsCell(frame: .init(x: 0, y: 0, width: width, height: 1500))
+            dummyCell.listController.items = items
+            size = dummyCell.listController.collectionViewLayout.collectionViewContentSize
+            size.height += padding * 1.5 + 30
+        }
+        
+        return .init(width: width, height: size.height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return .init(top: padding, left: padding, bottom: padding, right: padding)
+        return .init(top: padding, left: 0, bottom: -padding, right: 0)
     }
 }
 

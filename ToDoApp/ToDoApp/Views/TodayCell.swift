@@ -12,16 +12,16 @@ class TodayCell: BaseCollectionCell {
     
     fileprivate let checkBoxButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "icons8-ok-50 (1)").withRenderingMode(.alwaysOriginal), for: .normal)
-        button.widthConstraint(to: 48)
+        button.setImage(#imageLiteral(resourceName: "unchecked").withRenderingMode(.alwaysOriginal), for: .normal)
+        button.addSize(size: .init(width: 48, height: 48))
         return button
     }()
     
-    fileprivate let taskLabel: UILabel = {
+    public let taskLabel: UILabel = {
         let label = UILabel()
         label.text = "TASK TEXT"
         label.numberOfLines = 0
-        label.font = UIFont(name: CustomFont.regular.rawValue, size: 20)
+        label.font = UIFont(name: CustomFont.semibold.rawValue, size: 18)
         return label
     }()
     
@@ -40,7 +40,8 @@ class TodayCell: BaseCollectionCell {
             ])
         stackView.alignment = .center
         addSubview(stackView)
-        stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 16))
+        stackView.spacing = 4
+        stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 12, left: 8, bottom: 12, right: 16))
         separatorView()
     }
     
@@ -48,6 +49,6 @@ class TodayCell: BaseCollectionCell {
         let separatorView = UIView()
         addSubview(separatorView)
         separatorView.backgroundColor = UIColor(white: 0.6, alpha: 0.5)
-        separatorView.addContstraints(leading: leadingAnchor, top: nil, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 0, left: 48, bottom: 0, right: 0), size: .init(width: 0, height: 0.5))
+        separatorView.addContstraints(leading: leadingAnchor, top: nil, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 0, left: 60, bottom: 0, right: 0), size: .init(width: 0, height: 0.5))
     }
 }

@@ -11,6 +11,11 @@ import UIKit
 class ListController: BaseCollectionController, UICollectionViewDelegateFlowLayout {
     
     fileprivate let cellId = "listCell"
+    public var items = 0 {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +26,7 @@ class ListController: BaseCollectionController, UICollectionViewDelegateFlowLayo
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return items
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
