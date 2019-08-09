@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol ListControllerDelegate {
+    func didSelectList(at position: CGRect)
+}
+
 class ListController: BaseCollectionController, UICollectionViewDelegateFlowLayout {
     
     fileprivate let cellId = "listCell"
@@ -16,6 +20,8 @@ class ListController: BaseCollectionController, UICollectionViewDelegateFlowLayo
             collectionView.reloadData()
         }
     }
+    var startingFrame: CGRect!
+    var delegate: ListControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +38,17 @@ class ListController: BaseCollectionController, UICollectionViewDelegateFlowLayo
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
         return cell
+    }
+    
+    fileprivate func startingCellFrame(_ indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+        guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
+        self.startingFrame = startingFrame
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        startingCellFrame(indexPath)
+        delegate?.didSelectList(at: startingFrame)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
