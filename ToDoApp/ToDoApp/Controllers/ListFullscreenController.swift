@@ -15,7 +15,7 @@ protocol ListFullscreenControllerDelegate {
 class ListFullscreenController: UIViewController {
     
     fileprivate let listCellId = "listCell"
-    fileprivate let closeButton: UIButton = {
+    public let closeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "close"), for: .normal)
         button.tintColor = .black
@@ -23,17 +23,23 @@ class ListFullscreenController: UIViewController {
         return button
     }()
     var delegate: ListFullscreenControllerDelegate?
-    fileprivate let headerView = HeaderView()
+    public let headerView = HeaderView()
     
     @objc fileprivate func handleClose(sender: UIButton) {
         sender.isHidden = true
         headerView.headerLabel.font = UIFont(name: CustomFont.semibold.rawValue, size: 20)
         headerView.descriptionLabel.font = UIFont(name: CustomFont.regular.rawValue, size: 16)
-        
         delegate?.didSizeToMini()
     }
     
     let tableView = UITableView(frame: .zero, style: .plain)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        setupTableView()
+        setupButtons()
+    }
     
     fileprivate func setupTableView() {
         view.addSubview(tableView)
@@ -58,11 +64,11 @@ class ListFullscreenController: UIViewController {
         closeButton.addContstraints(leading: nil, top: view.safeAreaLayoutGuide.topAnchor, trailing: view.trailingAnchor, bottom: nil, padding: .init(top: 16, left: 0, bottom: 0, right: 0), size: .init(width: 58, height: 58))
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
-        setupTableView()
-        setupButtons()
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < 0 {
+            scrollView.isScrollEnabled = false
+            scrollView.isScrollEnabled = true
+        }
     }
 }
 
@@ -82,40 +88,5 @@ extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 80
-    }
-}
-
-class HeaderView: UIView {
-    
-    fileprivate let headerLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Inbox"
-        label.font = UIFont(name: CustomFont.semibold.rawValue, size: 28)
-        return label
-    }()
-    
-    fileprivate let descriptionLabel: UILabel = {
-        let label = UILabel()
-        label.text = "1 task"
-        label.font = UIFont(name: CustomFont.regular.rawValue, size: 21)
-        label.textColor = .darkGray
-        return label
-    }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
-        let stackView = UIStackView(arrangedSubviews: [
-            headerLabel, descriptionLabel
-            ])
-        stackView.axis = .vertical
-        stackView.distribution = .fillProportionally
-        stackView.spacing = 10
-        addSubview(stackView)
-        stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 16, left: 16, bottom: 16, right: 0))
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError()
     }
 }

@@ -106,39 +106,96 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     var startingPosition: CGRect!
 }
 
-extension HomeController: ListControllerDelegate, ListFullscreenControllerDelegate {
+extension HomeController: ListControllerDelegate, ListFullscreenControllerDelegate, UIGestureRecognizerDelegate {
     func didSelectList(at position: CGRect) {
         startingPosition = position
+        let listFullscreenView = setupListFullscreen()
+        createFullscreen(listFullscreenView: listFullscreenView, position: position)
+    }
+    
+    fileprivate func setupListFullscreen() -> UIView {
         listFullscreen = ListFullscreenController()
         listFullscreen.delegate = self
-        guard let listFullscreenView = listFullscreen.view else { return }
+        guard let listFullscreenView = listFullscreen.view else { return UIView() }
         listFullscreenView.clipsToBounds = true
         listFullscreenView.layer.cornerRadius = 14
         view.addSubview(listFullscreenView)
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handleDrag))
+        listFullscreen.view.addGestureRecognizer(panGesture)
+        panGesture.delegate = self
         addChild(listFullscreen)
+        return listFullscreenView
+    }
+    
+    fileprivate func createFullscreen(listFullscreenView: UIView, position: CGRect) {
         anchoredConstraints = listFullscreenView.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: nil, bottom: nil, padding: .init(top: position.origin.y, left: position.origin.x, bottom: 0, right: 0), size: .init(width: position.width, height: position.height))
         self.view.layoutIfNeeded()
         view.bringSubviewToFront(addButton)
-        animate(to: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
+        animate()
     }
     
-    func animate(to position: CGRect, dismissal: Bool = false) {
-        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseOut, animations: {
-            self.anchoredConstraints?.top?.constant = position.origin.y
-            self.anchoredConstraints?.leading?.constant = position.origin.x
-            self.anchoredConstraints?.width?.constant = position.width
-            self.anchoredConstraints?.height?.constant = position.height
-            self.view.layoutIfNeeded()
-        }) { (_) in
-            if dismissal {
-                self.listFullscreen.view.removeFromSuperview()
-                self.listFullscreen.removeFromParent()
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    @objc fileprivate func handleDrag(gesture: UIPanGestureRecognizer) {
+        var listFullscreenBeginOffset: CGFloat = 0
+        if gesture.state == .began {
+            listFullscreenBeginOffset = listFullscreen.tableView.contentOffset.y
+        }
+        if listFullscreen.tableView.contentOffset.y > 0 {
+            return
+        }
+        let translationY = gesture.translation(in: listFullscreen.view).y
+        if gesture.state == .changed {
+            let trueOffset = translationY - listFullscreenBeginOffset
+            var scale = min(1, 1 - trueOffset / 1000)
+            listFullscreen.closeButton.alpha = scale * 0.9
+            scale = max(0.6, scale)
+            let transform: CGAffineTransform = .init(scaleX: scale, y: scale)
+            listFullscreen.view.transform = transform
+            if translationY > 100 {
+                gesture.state = .ended
+            }
+        } else if gesture.state == .ended {
+            if translationY > 100 {
+                didSizeToMini()
+            } else {
+                UIView.animate(withDuration: 0.3) {
+                    self.listFullscreen.view.transform = .identity
+                }
             }
         }
     }
     
+    fileprivate func animate() {
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseOut, animations: {
+            self.anchoredConstraints?.top?.constant = 0
+            self.anchoredConstraints?.leading?.constant = 0
+            self.anchoredConstraints?.width?.constant = self.view.frame.width
+            self.anchoredConstraints?.height?.constant = self.view.frame.height
+            self.view.layoutIfNeeded()
+        })
+    }
+    
     func didSizeToMini() {
-        animate(to: startingPosition, dismissal: true)
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseOut, animations: {
+            self.collectionView.isUserInteractionEnabled = false
+            self.listFullscreen.tableView.contentOffset = .zero
+            self.listFullscreen.view.transform = .identity
+            self.anchoredConstraints?.top?.constant = self.startingPosition.origin.y
+            self.anchoredConstraints?.leading?.constant = self.startingPosition.origin.x
+            self.anchoredConstraints?.width?.constant = self.startingPosition.width
+            self.anchoredConstraints?.height?.constant = self.startingPosition.height
+            self.view.layoutIfNeeded()
+            self.listFullscreen.closeButton.alpha = 0
+            self.listFullscreen.headerView.headerLabel.font = UIFont(name: CustomFont.semibold.rawValue, size: 20)
+            self.listFullscreen.headerView.descriptionLabel.font = UIFont(name: CustomFont.regular.rawValue, size: 16)
+        }) { (_) in
+            self.listFullscreen.view.removeFromSuperview()
+            self.listFullscreen.removeFromParent()
+            self.collectionView.isUserInteractionEnabled = true
+        }
     }
 }
 
