@@ -117,6 +117,7 @@ extension HomeController: ListControllerDelegate {
         addChild(listFullscreen)
         anchoredConstraints = listFullscreenView.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: nil, bottom: nil, padding: .init(top: position.origin.y, left: position.origin.x, bottom: 0, right: 0), size: .init(width: position.width, height: position.height))
         self.view.layoutIfNeeded()
+        view.bringSubviewToFront(addButton)
         animate(to: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
     }
     
