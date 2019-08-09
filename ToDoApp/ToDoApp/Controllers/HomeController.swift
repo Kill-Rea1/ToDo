@@ -20,7 +20,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         return button
     }()
     fileprivate var anchoredConstraints: AnchoredConstraints!
-    fileprivate let items = 3
+    fileprivate let items = 5
     
     fileprivate lazy var topView: UIView = {
         let view = UIView()
@@ -129,6 +129,7 @@ extension HomeController: ListControllerDelegate {
             self.anchoredConstraints?.leading?.constant = position.origin.x
             self.anchoredConstraints?.width?.constant = position.width
             self.anchoredConstraints?.height?.constant = position.height
+            self.redView.layer.cornerRadius = dismissal ? 14 : 0
             self.view.layoutIfNeeded()
         }) { (_) in
             if dismissal {
