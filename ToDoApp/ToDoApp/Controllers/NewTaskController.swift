@@ -32,7 +32,14 @@ class NewTaskController: UIViewController {
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(handleDone))
-//        taskTextView.becomeFirstResponder()
+        navigationController?.navigationBar.backgroundColor = .white
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        setupView()
+    }
+    
+    fileprivate func setupView() {
         let stackView = UIStackView(arrangedSubviews: [checkBoxButton, taskTextView])
         stackView.alignment = .top
         stackView.autoresizingMask = .flexibleHeight
@@ -51,7 +58,7 @@ class NewTaskController: UIViewController {
     }
     
     fileprivate func createToolBar() {
-        let accessoryView = CustomAccessoryView(frame: .init(x: 0, y: 0, width: view.frame.width, height: 100))
+        let accessoryView = CustomAccessoryView(frame: .init(x: 0, y: 0, width: view.frame.width, height: 115))
         taskTextView.inputAccessoryView = accessoryView
     }
 }
