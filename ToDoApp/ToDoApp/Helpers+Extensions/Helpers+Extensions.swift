@@ -74,6 +74,11 @@ extension UIView {
     }
 }
 
+extension Notification.Name{
+    static let datePicker = NSNotification.Name("datePicker")
+    static let timePicker = NSNotification.Name("timePicker")
+}
+
 enum CustomFont: String {
     case semibold = "Montserrat-SemiBold"
     case regular = "Montserrat-Regular"

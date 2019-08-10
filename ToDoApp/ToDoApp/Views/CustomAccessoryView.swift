@@ -10,19 +10,18 @@ import UIKit
 
 class CustomAccessoryView: UIView {
     
-    let dateView: UIView = {
+    var datePicker: UIDatePicker!
+    lazy var dateView: UIView = {
         let v = UIView()
         
         let label = UILabel()
         label.font = UIFont(name: CustomFont.semibold.rawValue, size: 24)
         label.text = "When?"
         
-        let time = UIDatePicker()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM"
-        time.date = Date()
-        time.minimumDate = Date()
-        time.datePickerMode = .date
+        datePicker = UIDatePicker()
+        datePicker.date = Date()
+        datePicker.minimumDate = Date()
+        datePicker.datePickerMode = .date
         
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "icons8-forward-50 (1)").withRenderingMode(.alwaysOriginal), for: .normal)
@@ -30,33 +29,35 @@ class CustomAccessoryView: UIView {
         
         v.addSubview(button)
         v.addSubview(label)
-        v.addSubview(time)
+        v.addSubview(datePicker)
         
         button.addSize(size: .init(width: 50, height: 50))
         button.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
         button.trailingAnchor.constraint(equalTo: v.trailingAnchor).isActive = true
         label.addContstraints(leading: v.leadingAnchor, top: v.topAnchor, trailing: button.leadingAnchor, bottom: nil, padding: .init(top: 8, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 40))
         
-        time.addContstraints(leading: v.leadingAnchor, top: label.bottomAnchor, trailing: button.leadingAnchor, bottom: v.bottomAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16))
+        datePicker.addContstraints(leading: v.leadingAnchor, top: label.bottomAnchor, trailing: button.leadingAnchor, bottom: v.bottomAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16))
         v.clipsToBounds = true
         
         return v
     }()
     
-    let timeView: UIView = {
+    var selectedDate = Date()
+    
+    var timePicker: UIDatePicker!
+    
+    lazy var timeView: UIView = {
         let v = UIView()
         
         let label = UILabel()
         label.font = UIFont(name: CustomFont.semibold.rawValue, size: 24)
         label.text = "What time?"
         
-        let time = UIDatePicker()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        time.date = Date()
-        time.minimumDate = Date()
-        time.datePickerMode = .time
-        time.locale = Locale(identifier: "ru")
+        timePicker = UIDatePicker()
+        timePicker.locale = Locale(identifier: "ru")
+        timePicker.date = Date()
+        timePicker.minimumDate = selectedDate
+        timePicker.datePickerMode = .time
         
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "icons8-back-50").withRenderingMode(.alwaysOriginal), for: .normal)
@@ -65,13 +66,13 @@ class CustomAccessoryView: UIView {
         
         v.addSubview(button)
         v.addSubview(label)
-        v.addSubview(time)
+        v.addSubview(timePicker)
         button.addSize(size: .init(width: 50, height: 50))
         button.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
         button.leadingAnchor.constraint(equalTo: v.leadingAnchor).isActive = true
         label.addContstraints(leading: button.trailingAnchor, top: v.topAnchor, trailing: v.trailingAnchor, bottom: nil, padding: .init(top: 8, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 40))
         
-        time.addContstraints(leading: button.trailingAnchor, top: label.bottomAnchor, trailing: v.trailingAnchor, bottom: v.bottomAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16))
+        timePicker.addContstraints(leading: button.trailingAnchor, top: label.bottomAnchor, trailing: v.trailingAnchor, bottom: v.bottomAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16))
         v.clipsToBounds = true
         
         return v
@@ -81,13 +82,25 @@ class CustomAccessoryView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .red
+        backgroundColor = #colorLiteral(red: 0.9607843137, green: 0.968627451, blue: 0.9803921569, alpha: 1)
         dateView.backgroundColor = #colorLiteral(red: 0.9607843137, green: 0.968627451, blue: 0.9803921569, alpha: 1)
         timeView.backgroundColor = #colorLiteral(red: 0.9607843137, green: 0.968627451, blue: 0.9803921569, alpha: 1)
         addSubview(dateView)
         addSubview(timeView)
         anchored = dateView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor)
         timeView.addContstraints(leading: dateView.trailingAnchor, top: dateView.topAnchor, trailing: nil, bottom: dateView.bottomAnchor, size: .init(width: frame.width, height: 0))
+        datePicker.addTarget(self, action: #selector(handleDate), for: .valueChanged)
+        timePicker.addTarget(self, action: #selector(handleTime), for: .valueChanged)
+    }
+    
+    @objc fileprivate func handleTime(sender: UIDatePicker) {
+        NotificationCenter.default.post(name: .timePicker, object: sender.date)
+    }
+    
+    @objc fileprivate func handleDate(sender: UIDatePicker) {
+        selectedDate = sender.date
+        timePicker.minimumDate = sender.date
+        NotificationCenter.default.post(name: .datePicker, object: sender.date)
     }
     
     @objc func handleTap(sender: UIButton) {

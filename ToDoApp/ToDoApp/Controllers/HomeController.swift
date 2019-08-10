@@ -13,13 +13,13 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     fileprivate let todaysCellId = "todaysCell"
     fileprivate let listsCellId = "listsCell"
     fileprivate let padding: CGFloat = 16
-    fileprivate let addButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "add"), for: .normal)
-        button.tintColor = .blue
-        button.addTarget(self, action: #selector(handleAdd), for: .touchUpInside)
-        return button
-    }()
+//    fileprivate let addButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        button.setImage(#imageLiteral(resourceName: "add"), for: .normal)
+//        button.tintColor = .blue
+//        button.addTarget(self, action: #selector(handleAdd), for: .touchUpInside)
+//        return button
+//    }()
     fileprivate var anchoredConstraints: AnchoredConstraints!
     fileprivate let items = 5
     fileprivate var addController: AddController!
@@ -45,8 +45,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     fileprivate func setupViews() {
         view.addSubview(topView)
         topView.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.safeAreaLayoutGuide.topAnchor, padding: .init(top: 0, left: 0, bottom: -(padding * 5), right: 0))
-        view.addSubview(addButton)
-        addButton.addContstraints(leading: nil, top: nil, trailing: view.trailingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, padding: .init(top: 0, left: 0, bottom: padding, right: padding), size: .init(width: 76, height: 76))
+//        view.addSubview(addButton)
+//        addButton.addContstraints(leading: nil, top: nil, trailing: view.trailingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, padding: .init(top: 0, left: 0, bottom: padding, right: padding), size: .init(width: 76, height: 76))
         
     }
     
@@ -132,7 +132,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 extension HomeController: ListControllerDelegate, ListFullscreenControllerDelegate, UIGestureRecognizerDelegate, AddControllerDelegate {
     
     func dismiss() {
-        handleAdd(sender: addButton)
+//        handleAdd(sender: addButton)
     }
     
     func didSelectList(at position: CGRect) {
@@ -158,7 +158,7 @@ extension HomeController: ListControllerDelegate, ListFullscreenControllerDelega
     fileprivate func createFullscreen(listFullscreenView: UIView, position: CGRect) {
         anchoredConstraints = listFullscreenView.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: nil, bottom: nil, padding: .init(top: position.origin.y, left: position.origin.x, bottom: 0, right: 0), size: .init(width: position.width, height: position.height))
         self.view.layoutIfNeeded()
-        view.bringSubviewToFront(addButton)
+//        view.bringSubviewToFront(addButton)
         animate()
     }
     

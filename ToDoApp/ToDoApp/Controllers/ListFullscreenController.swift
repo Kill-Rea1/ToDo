@@ -26,6 +26,9 @@ class ListFullscreenController: UIViewController {
     var items = 3
     public let headerView = HeaderView()
     fileprivate lazy var cav = CustomAccessoryView(frame: .init(x: 0, y: 0, width: view.frame.width, height: 115))
+    fileprivate var selectedDate: String!
+    fileprivate var selectedTime: String!
+    fileprivate var selected: Date!
     
     @objc fileprivate func handleClose(sender: UIButton) {
         sender.isHidden = true
@@ -41,11 +44,57 @@ class ListFullscreenController: UIViewController {
         view.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         setupTableView()
         setupButtons()
+        setupDefaultTime()
+        setupNotifications()
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    fileprivate func setupDefaultTime() {
+        let currentDate = Date()
+        turnDateToString(date: currentDate, format: "dd MMMM")
+        turnDateToString(date: currentDate, format: "HH:mm")
+    }
+    
+    fileprivate func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleDatePicked), name: .datePicker, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTimePicked), name: .timePicker, object: nil)
+    }
+    
+    @objc fileprivate func handleDatePicked(notification: Notification) {
+        guard let date = notification.object as? Date else { return }
+        turnDateToString(date: date, format: "dd MMMM")
+    }
+    
+    @objc fileprivate func handleTimePicked(notification: Notification) {
+        guard let time = notification.object as? Date else { return }
+        turnDateToString(date: time, format: "HH:mm")
+    }
+    
+    fileprivate func turnDateToString(date: Date, format: String) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        if format == "HH:mm" {
+            selectedTime = dateFormatter.string(from: date)
+        } else {
+            selectedDate = dateFormatter.string(from: date)
+        }
     }
     
     @objc fileprivate func handleTap() {
         view.endEditing(true)
+    }
+    
+    fileprivate func getDate(date: String, time: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM dd, HH:mm"
+        let string = date + ", " + time
+        guard let date = dateFormatter.date(from: string) else { return Date() }
+        return date
     }
     
     fileprivate func setupTableView() {
@@ -99,7 +148,7 @@ extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 85
+        return 80
     }
 }
 
@@ -123,9 +172,20 @@ extension ListFullscreenController: ListFullscreenCellDelegate,  UITextFieldDele
             cell.checkBoxButton.setImage(#imageLiteral(resourceName: "add"), for: .normal)
         } else {
             cell.isTaskCell = true
+            let date = getDate(date: selectedDate, time: selectedTime)
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd MMMM, HH:mm"
+            cell.dateLabel.text = dateFormatter.string(from: date)
             addNewCell()
         }
         cell.taskTextField.isEnabled = false
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if string == "\n" {
+            textField.resignFirstResponder()
+        }
+        return true
     }
     
     func addNewCell() {

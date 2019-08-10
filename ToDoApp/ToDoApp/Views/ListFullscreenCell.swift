@@ -34,12 +34,18 @@ class ListFullscreenCell: UITableViewCell {
         tf.font = UIFont(name: CustomFont.semibold.rawValue, size: 12)
         tf.isEnabled = false
         tf.autocorrectionType = .no
+        tf.returnKeyType = .done
         return tf
+    }()
+    
+    public let dateLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.regular.rawValue, size: 10)
+        return label
     }()
     
     var isTaskCell: Bool = true {
         didSet {
-
             if !isTaskCell {
                 checkBoxButton.setImage(#imageLiteral(resourceName: "add"), for: .normal)
                 taskTextField.text = ""
@@ -51,8 +57,12 @@ class ListFullscreenCell: UITableViewCell {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
         backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        
+        let taskDateStackView = UIStackView(arrangedSubviews: [taskTextField, dateLabel])
+        taskDateStackView.axis = .vertical
+        
         let stackView = UIStackView(arrangedSubviews: [
-            checkBoxButton, taskTextField
+            checkBoxButton, taskDateStackView
             ])
         checkBoxButton.addTarget(self, action: #selector(handleCheckboxButtonTapped), for: .touchUpInside)
         stackView.alignment = .center
