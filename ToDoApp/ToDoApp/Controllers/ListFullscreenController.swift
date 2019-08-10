@@ -137,10 +137,23 @@ extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: listCellId, for: indexPath) as! ListFullscreenCell
         if indexPath.row == items - 1 {
             cell.isTaskCell = false
+        } else {
+            cell.isTaskCell = true
         }
         cell.checkBoxButton.tag = indexPath.row
-        cell.delegate = self
+        cell.checkBoxButton.addTarget(self, action: #selector(handleButtonTapped), for: .touchUpInside)
         return cell
+    }
+    
+    @objc fileprivate func handleButtonTapped(sender: UIButton) {
+        let point = sender.convert(CGPoint.zero, to: tableView)
+        guard let indexPath = tableView.indexPathForRow(at: point) else { return }
+        if indexPath.row == items - 1 {
+            didAddNewTask()
+        } else {
+            didCheckedTask(row: indexPath.row)
+//            sender.isUserInteractionEnabled = false
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -152,7 +165,7 @@ extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-extension ListFullscreenController: ListFullscreenCellDelegate,  UITextFieldDelegate {
+extension ListFullscreenController: UITextFieldDelegate {
     func didAddNewTask() {
         let indexPath = IndexPath(row: items - 1, section: 0)
         guard let cell = tableView.cellForRow(at: indexPath) as? ListFullscreenCell else { return }
@@ -191,7 +204,11 @@ extension ListFullscreenController: ListFullscreenCellDelegate,  UITextFieldDele
     func addNewCell() {
         let indexPath = IndexPath(row: items, section: 0)
         items += 1
+        tableView.beginUpdates()
         tableView.insertRows(at: [indexPath], with: .middle)
+        tableView.endUpdates()
+//        tableView.reloadData()
+//        updateTags()
     }
     
     func didCheckedTask(row: Int) {
@@ -217,7 +234,14 @@ extension ListFullscreenController: ListFullscreenCellDelegate,  UITextFieldDele
     
     func removeCellFrom(_ indexPath: IndexPath) {
         items -= 1
+        tableView.beginUpdates()
         tableView.deleteRows(at: [indexPath], with: .top)
+        tableView.endUpdates()
+//        tableView.reloadData()
+//        updateTags()
+    }
+    
+    fileprivate func updateTags() {
         (0..<items).forEach { (i) in
             guard let cell = tableView.cellForRow(at: [i, 0]) as? ListFullscreenCell else { return }
             cell.checkBoxButton.tag = i

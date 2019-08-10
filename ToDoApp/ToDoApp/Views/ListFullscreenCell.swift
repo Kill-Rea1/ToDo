@@ -8,15 +8,7 @@
 
 import UIKit
 
-
-protocol ListFullscreenCellDelegate: class {
-    func didCheckedTask(row: Int)
-    func didAddNewTask()
-}
-
 class ListFullscreenCell: UITableViewCell {
-    
-    weak var delegate: ListFullscreenCellDelegate?
     
     public let checkBoxButton: UIButton = {
         let button = UIButton(type: .system)
@@ -64,19 +56,10 @@ class ListFullscreenCell: UITableViewCell {
         let stackView = UIStackView(arrangedSubviews: [
             checkBoxButton, taskDateStackView
             ])
-        checkBoxButton.addTarget(self, action: #selector(handleCheckboxButtonTapped), for: .touchUpInside)
         stackView.alignment = .center
         stackView.spacing = 8
         addSubview(stackView)
         stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16))
-    }
-    
-    @objc fileprivate func handleCheckboxButtonTapped(sender: UIButton) {
-        if !isTaskCell {
-            delegate?.didAddNewTask()
-        } else {
-            delegate?.didCheckedTask(row: sender.tag)
-        }
     }
     
     required init?(coder aDecoder: NSCoder) {
