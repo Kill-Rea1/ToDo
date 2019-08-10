@@ -23,7 +23,9 @@ class ListFullscreenController: UIViewController {
         return button
     }()
     var delegate: ListFullscreenControllerDelegate?
+    var items = 3
     public let headerView = HeaderView()
+    fileprivate lazy var cav = CustomAccessoryView(frame: .init(x: 0, y: 0, width: view.frame.width, height: 115))
     
     @objc fileprivate func handleClose(sender: UIButton) {
         sender.isHidden = true
@@ -39,6 +41,11 @@ class ListFullscreenController: UIViewController {
         view.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         setupTableView()
         setupButtons()
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
+    }
+    
+    @objc fileprivate func handleTap() {
+        view.endEditing(true)
     }
     
     fileprivate func setupTableView() {
@@ -55,8 +62,7 @@ class ListFullscreenController: UIViewController {
         tableView.contentInset = .init(top: 0, left: 0, bottom: height, right: 0)
         tableView.register(ListFullscreenCell.self, forCellReuseIdentifier: listCellId)
         tableView.delaysContentTouches = false
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 600
+        tableView.rowHeight = 40
     }
     
     fileprivate func setupButtons() {
@@ -74,11 +80,15 @@ class ListFullscreenController: UIViewController {
 
 extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return items
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: listCellId, for: indexPath) as! ListFullscreenCell
+        if indexPath.row == items - 1 {
+            cell.isTaskCell = false
+        }
+        cell.delegate = self
         return cell
     }
     
@@ -87,6 +97,38 @@ extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 80
+        return 85
+    }
+}
+
+extension ListFullscreenController: ListFullscreenCellDelegate,  UITextFieldDelegate {
+    func didAddNewTask() {
+        let indexPath = IndexPath(row: items - 1, section: 0)
+        guard let cell = tableView.cellForRow(at: indexPath) as? ListFullscreenCell else { return }
+        
+        cell.checkBoxButton.setImage(#imageLiteral(resourceName: "unchecked"), for: .normal)
+        cell.taskTextField.isEnabled = true
+        cell.taskTextField.inputAccessoryView = cav
+        cell.taskTextField.becomeFirstResponder()
+        cell.taskTextField.delegate = self
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let isEmty = textField.text?.isEmpty else { return }
+        let indexPath = IndexPath(row: items - 1, section: 0)
+        guard let cell = tableView.cellForRow(at: indexPath) as? ListFullscreenCell else { return }
+        if isEmty {
+            cell.checkBoxButton.setImage(#imageLiteral(resourceName: "add"), for: .normal)
+        } else {
+            cell.isTaskCell = true
+            addNewCell()
+        }
+        cell.taskTextField.isEnabled = false
+    }
+    
+    func addNewCell() {
+        let indexPath = IndexPath(row: items, section: 0)
+        items += 1
+        tableView.insertRows(at: [indexPath], with: .middle)
     }
 }

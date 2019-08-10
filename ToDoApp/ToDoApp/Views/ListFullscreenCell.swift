@@ -8,41 +8,64 @@
 
 import UIKit
 
+
+protocol ListFullscreenCellDelegate: class {
+    //    optional func didCheckedTask()
+    
+    func didAddNewTask()
+}
+
 class ListFullscreenCell: UITableViewCell {
     
-    fileprivate let checkBoxButton: UIButton = {
+    weak var delegate: ListFullscreenCellDelegate?
+    
+    public let checkBoxButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "unchecked").withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "unchecked"), for: .normal)
+        button.tintColor = .white
         button.addSize(size: .init(width: 48, height: 48))
         return button
     }()
     
-    public let taskLabel: UILabel = {
-        let label = UILabel()
-        label.text = "REALLY LONG TASK WHICH WOULD BREAK MY AUTO SIZING MAY BE I BELIVE IT WON'T HAPPEN"
-        label.numberOfLines = 0
-        label.font = UIFont(name: CustomFont.semibold.rawValue, size: 15)
-        return label
+    public var cav: CustomAccessoryView!
+    
+    public let taskTextField: UITextField = {
+        let tf = UITextField()
+        tf.text = "REALLY LONG TASK WHICH WOULD BREAK MY AUTO SIZING MAY BE I BELIVE IT WON'T HAPPEN"
+        tf.font = UIFont(name: CustomFont.semibold.rawValue, size: 12)
+        tf.isEnabled = false
+        tf.autocorrectionType = .no
+        return tf
     }()
     
+    var isTaskCell: Bool = true {
+        didSet {
+
+            if !isTaskCell {
+                checkBoxButton.setImage(#imageLiteral(resourceName: "add"), for: .normal)
+                taskTextField.text = ""
+            }
+        }
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
+        
         backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         let stackView = UIStackView(arrangedSubviews: [
-            checkBoxButton, taskLabel
+            checkBoxButton, taskTextField
             ])
+        checkBoxButton.addTarget(self, action: #selector(handleCheckboxButtonTapped), for: .touchUpInside)
         stackView.alignment = .center
         stackView.spacing = 8
         addSubview(stackView)
-        stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 16, left: 16, bottom: 16, right: 16))
-        separatorView()
+        stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16))
     }
     
-    fileprivate func separatorView() {
-        let separatorView = UIView()
-        addSubview(separatorView)
-        separatorView.backgroundColor = UIColor(white: 0.6, alpha: 0.5)
-        separatorView.addContstraints(leading: leadingAnchor, top: nil, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 0, left: 72, bottom: 0, right: 0), size: .init(width: 0, height: 0.5))
+    @objc fileprivate func handleCheckboxButtonTapped(sender: UIButton) {
+        if !isTaskCell {
+            delegate?.didAddNewTask()
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
