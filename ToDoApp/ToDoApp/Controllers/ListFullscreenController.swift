@@ -62,7 +62,8 @@ class ListFullscreenController: UIViewController {
         tableView.contentInset = .init(top: 0, left: 0, bottom: height, right: 0)
         tableView.register(ListFullscreenCell.self, forCellReuseIdentifier: listCellId)
         tableView.delaysContentTouches = false
-        tableView.rowHeight = 40
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 600
     }
     
     fileprivate func setupButtons() {
@@ -88,6 +89,7 @@ extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
         if indexPath.row == items - 1 {
             cell.isTaskCell = false
         }
+        cell.checkBoxButton.tag = indexPath.row
         cell.delegate = self
         return cell
     }
@@ -130,5 +132,35 @@ extension ListFullscreenController: ListFullscreenCellDelegate,  UITextFieldDele
         let indexPath = IndexPath(row: items, section: 0)
         items += 1
         tableView.insertRows(at: [indexPath], with: .middle)
+    }
+    
+    func didCheckedTask(row: Int) {
+        let indexPath = IndexPath(row: row, section: 0)
+        guard let cell = tableView.cellForRow(at: indexPath) as? ListFullscreenCell else { return }
+        let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: cell.taskTextField.text ?? "")
+        cell.taskTextField.text = ""
+        attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
+        let transition = CATransition()
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromTop
+        transition.duration = 0.3
+        cell.taskTextField.attributedText = attributeString
+        cell.taskTextField.layer.add(transition, forKey: kCATransition)
+        cell.checkBoxButton.setImage(#imageLiteral(resourceName: "checked"), for: .normal)
+        cell.taskTextField.attributedText = attributeString
+        cell.taskTextField.layer.add(transition, forKey: kCATransition)
+        cell.checkBoxButton.setImage(#imageLiteral(resourceName: "checked"), for: .normal)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.removeCellFrom(indexPath)
+        }
+    }
+    
+    func removeCellFrom(_ indexPath: IndexPath) {
+        items -= 1
+        tableView.deleteRows(at: [indexPath], with: .top)
+        (0..<items).forEach { (i) in
+            guard let cell = tableView.cellForRow(at: [i, 0]) as? ListFullscreenCell else { return }
+            cell.checkBoxButton.tag = i
+        }
     }
 }

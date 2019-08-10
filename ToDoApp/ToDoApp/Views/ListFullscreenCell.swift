@@ -10,8 +10,7 @@ import UIKit
 
 
 protocol ListFullscreenCellDelegate: class {
-    //    optional func didCheckedTask()
-    
+    func didCheckedTask(row: Int)
     func didAddNewTask()
 }
 
@@ -65,6 +64,8 @@ class ListFullscreenCell: UITableViewCell {
     @objc fileprivate func handleCheckboxButtonTapped(sender: UIButton) {
         if !isTaskCell {
             delegate?.didAddNewTask()
+        } else {
+            delegate?.didCheckedTask(row: sender.tag)
         }
     }
     

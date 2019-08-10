@@ -198,6 +198,7 @@ extension HomeController: ListControllerDelegate, ListFullscreenControllerDelega
     
     fileprivate func animate() {
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseOut, animations: {
+            self.listFullscreen.view.layer.cornerRadius = 0
             self.anchoredConstraints?.top?.constant = 0
             self.anchoredConstraints?.leading?.constant = 0
             self.anchoredConstraints?.width?.constant = self.view.frame.width
@@ -207,6 +208,7 @@ extension HomeController: ListControllerDelegate, ListFullscreenControllerDelega
     }
     
     func didSizeToMini() {
+        listFullscreen.view.layer.cornerRadius = 14
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseOut, animations: {
             self.collectionView.isUserInteractionEnabled = false
             self.listFullscreen.tableView.contentOffset = .zero
