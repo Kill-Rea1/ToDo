@@ -10,18 +10,21 @@ import UIKit
 
 class CustomAccessoryView: UIView {
     
-    var datePicker: UIDatePicker!
+    fileprivate let currentDate = Date()
+    lazy var datePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.date = currentDate
+        picker.minimumDate = currentDate
+        picker.datePickerMode = .date
+        return picker
+    }()
+    
     lazy var dateView: UIView = {
         let v = UIView()
         
         let label = UILabel()
-        label.font = UIFont(name: CustomFont.semibold.rawValue, size: 24)
+        label.font = UIFont(name: Montserrat.semibold.rawValue, size: 24)
         label.text = "When?"
-        
-        datePicker = UIDatePicker()
-        datePicker.date = Date()
-        datePicker.minimumDate = Date()
-        datePicker.datePickerMode = .date
         
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "icons8-forward-50 (1)").withRenderingMode(.alwaysOriginal), for: .normal)
@@ -35,29 +38,26 @@ class CustomAccessoryView: UIView {
         button.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
         button.trailingAnchor.constraint(equalTo: v.trailingAnchor).isActive = true
         label.addContstraints(leading: v.leadingAnchor, top: v.topAnchor, trailing: button.leadingAnchor, bottom: nil, padding: .init(top: 8, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 40))
-        
         datePicker.addContstraints(leading: v.leadingAnchor, top: label.bottomAnchor, trailing: button.leadingAnchor, bottom: v.bottomAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16))
         v.clipsToBounds = true
         
         return v
     }()
     
-    var selectedDate = Date()
-    
-    var timePicker: UIDatePicker!
+    lazy var timePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.date = currentDate
+        picker.minimumDate = currentDate
+        picker.datePickerMode = .time
+        return picker
+    }()
     
     lazy var timeView: UIView = {
         let v = UIView()
         
         let label = UILabel()
-        label.font = UIFont(name: CustomFont.semibold.rawValue, size: 24)
+        label.font = UIFont(name: Montserrat.semibold.rawValue, size: 24)
         label.text = "What time?"
-        
-        timePicker = UIDatePicker()
-        timePicker.locale = Locale(identifier: "ru")
-        timePicker.date = Date()
-        timePicker.minimumDate = selectedDate
-        timePicker.datePickerMode = .time
         
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "icons8-back-50").withRenderingMode(.alwaysOriginal), for: .normal)
@@ -71,7 +71,6 @@ class CustomAccessoryView: UIView {
         button.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
         button.leadingAnchor.constraint(equalTo: v.leadingAnchor).isActive = true
         label.addContstraints(leading: button.trailingAnchor, top: v.topAnchor, trailing: v.trailingAnchor, bottom: nil, padding: .init(top: 8, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 40))
-        
         timePicker.addContstraints(leading: button.trailingAnchor, top: label.bottomAnchor, trailing: v.trailingAnchor, bottom: v.bottomAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16))
         v.clipsToBounds = true
         
@@ -98,15 +97,12 @@ class CustomAccessoryView: UIView {
     }
     
     @objc fileprivate func handleDate(sender: UIDatePicker) {
-        selectedDate = sender.date
         timePicker.minimumDate = sender.date
         NotificationCenter.default.post(name: .datePicker, object: sender.date)
     }
     
     @objc func handleTap(sender: UIButton) {
-        let tag = sender.tag
-        
-        if tag == 0 {
+        if sender.tag == 0 {
             UIView.animate(withDuration: 0.5) {
                 self.anchored.leading?.constant = -self.frame.width
                 self.anchored.trailing?.constant = -self.frame.width

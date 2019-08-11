@@ -24,9 +24,8 @@
 		ED67E4B622FDBD6400A077CF /* ListFullscreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4B522FDBD6400A077CF /* ListFullscreenController.swift */; };
 		ED67E4B822FDD1B900A077CF /* ListFullscreenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4B722FDD1B900A077CF /* ListFullscreenCell.swift */; };
 		ED67E4BA22FDDE9E00A077CF /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4B922FDDE9E00A077CF /* HeaderView.swift */; };
-		ED67E4BC22FDEE1B00A077CF /* AddController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4BB22FDEE1B00A077CF /* AddController.swift */; };
-		ED67E4BE22FDFB3700A077CF /* NewTaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4BD22FDFB3700A077CF /* NewTaskController.swift */; };
 		ED67E4C322FE1C4200A077CF /* CustomAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4C222FE1C4200A077CF /* CustomAccessoryView.swift */; };
+		ED87F2E322FF9A78001BE2B8 /* Montserrat.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED87F2E222FF9A78001BE2B8 /* Montserrat.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,9 +48,8 @@
 		ED67E4B522FDBD6400A077CF /* ListFullscreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListFullscreenController.swift; sourceTree = "<group>"; };
 		ED67E4B722FDD1B900A077CF /* ListFullscreenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListFullscreenCell.swift; sourceTree = "<group>"; };
 		ED67E4B922FDDE9E00A077CF /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
-		ED67E4BB22FDEE1B00A077CF /* AddController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddController.swift; sourceTree = "<group>"; };
-		ED67E4BD22FDFB3700A077CF /* NewTaskController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskController.swift; sourceTree = "<group>"; };
 		ED67E4C222FE1C4200A077CF /* CustomAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAccessoryView.swift; sourceTree = "<group>"; };
+		ED87F2E222FF9A78001BE2B8 /* Montserrat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Montserrat.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +98,7 @@
 			children = (
 				ED67E4A322FCA3E800A077CF /* Montserrat-SemiBold.otf */,
 				ED67E4A422FCA40300A077CF /* Montserrat-Regular.ttf */,
+				ED87F2E222FF9A78001BE2B8 /* Montserrat.swift */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -111,8 +110,6 @@
 				ED67E4AB22FCB49600A077CF /* ListController.swift */,
 				ED67E4B122FCBC7C00A077CF /* TodayController.swift */,
 				ED67E4B522FDBD6400A077CF /* ListFullscreenController.swift */,
-				ED67E4BB22FDEE1B00A077CF /* AddController.swift */,
-				ED67E4BD22FDFB3700A077CF /* NewTaskController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -225,15 +222,14 @@
 				ED67E49F22FC8A5600A077CF /* ListsCell.swift in Sources */,
 				ED67E4B822FDD1B900A077CF /* ListFullscreenCell.swift in Sources */,
 				ED67E4B022FCBB7500A077CF /* TodaysCell.swift in Sources */,
-				ED67E4BE22FDFB3700A077CF /* NewTaskController.swift in Sources */,
 				ED67E4B622FDBD6400A077CF /* ListFullscreenController.swift in Sources */,
-				ED67E4BC22FDEE1B00A077CF /* AddController.swift in Sources */,
 				ED67E4B422FCBD4E00A077CF /* TodayCell.swift in Sources */,
 				ED67E4AC22FCB49600A077CF /* ListController.swift in Sources */,
 				ED67E4A122FC8B0200A077CF /* Helpers+Extensions.swift in Sources */,
 				ED67E4BA22FDDE9E00A077CF /* HeaderView.swift in Sources */,
 				ED67E4AE22FCB83400A077CF /* ListCell.swift in Sources */,
 				ED67E4B222FCBC7C00A077CF /* TodayController.swift in Sources */,
+				ED87F2E322FF9A78001BE2B8 /* Montserrat.swift in Sources */,
 				ED67E4C322FE1C4200A077CF /* CustomAccessoryView.swift in Sources */,
 				ED67E48F22FC859600A077CF /* HomeController.swift in Sources */,
 				ED67E48D22FC859600A077CF /* AppDelegate.swift in Sources */,

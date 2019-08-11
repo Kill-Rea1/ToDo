@@ -28,7 +28,6 @@ class ListFullscreenController: UIViewController {
         return button
     }()
     var delegate: ListFullscreenControllerDelegate?
-    var items = 3
     var tasks = [
         Task(task: "Task 1", date: Date()),
         Task(task: "Task 2", date: Date())
@@ -37,14 +36,6 @@ class ListFullscreenController: UIViewController {
     fileprivate lazy var cav = CustomAccessoryView(frame: .init(x: 0, y: 0, width: view.frame.width, height: 115))
     fileprivate var selectedDate: String!
     fileprivate var selectedTime: String!
-    fileprivate var selected: Date!
-    
-    @objc fileprivate func handleClose(sender: UIButton) {
-        sender.isHidden = true
-        headerView.headerLabel.font = UIFont(name: CustomFont.semibold.rawValue, size: 20)
-        headerView.descriptionLabel.font = UIFont(name: CustomFont.regular.rawValue, size: 16)
-        delegate?.didSizeToMini()
-    }
     
     let tableView = UITableView(frame: .zero, style: .plain)
     
@@ -129,6 +120,13 @@ class ListFullscreenController: UIViewController {
         closeButton.addContstraints(leading: nil, top: view.safeAreaLayoutGuide.topAnchor, trailing: view.trailingAnchor, bottom: nil, padding: .init(top: 16, left: 0, bottom: 0, right: 0), size: .init(width: 58, height: 58))
     }
     
+    @objc fileprivate func handleClose(sender: UIButton) {
+        sender.isHidden = true
+        headerView.headerLabel.font = UIFont(name: Montserrat.semibold.rawValue, size: 20)
+        headerView.descriptionLabel.font = UIFont(name: Montserrat.regular.rawValue, size: 16)
+        delegate?.didSizeToMini()
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y < 0 {
             scrollView.isScrollEnabled = false
@@ -165,7 +163,7 @@ extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
             didAddNewTask()
         } else {
             didCheckedTask(row: indexPath.row)
-//            sender.isUserInteractionEnabled = false
+            sender.isUserInteractionEnabled = false
         }
     }
     
@@ -179,32 +177,10 @@ extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension ListFullscreenController: UITextFieldDelegate {
-    func didAddNewTask() {
-        let indexPath = IndexPath(row: tasks.count, section: 0)
-        guard let cell = tableView.cellForRow(at: indexPath) as? ListFullscreenCell else { return }
-        
-        cell.checkBoxButton.setImage(#imageLiteral(resourceName: "unchecked"), for: .normal)
-        cell.taskTextField.isEnabled = true
-        cell.taskTextField.inputAccessoryView = cav
-        cell.taskTextField.becomeFirstResponder()
-        cell.taskTextField.delegate = self
-    }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-//        guard let isEmty = textField.text?.isEmpty else { return }
         let indexPath = IndexPath(row: tasks.count, section: 0)
         guard let cell = tableView.cellForRow(at: indexPath) as? ListFullscreenCell else { return }
-//        if isEmty {
-//            cell.checkBoxButton.setImage(#imageLiteral(resourceName: "add"), for: .normal)
-//        } else {
-//            cell.isTaskCell = true
-//            let date = getDate(date: selectedDate, time: selectedTime)
-//            let dateFormatter = DateFormatter()
-//            dateFormatter.dateFormat = "dd MMMM, HH:mm"
-//            cell.dateLabel.text = dateFormatter.string(from: date)
-//            addNewCell()
-//        }
-//        cell.taskTextField.isEnabled = false
         
         guard let taskText = textField.text else { return }
         if taskText.isEmpty {
@@ -228,14 +204,21 @@ extension ListFullscreenController: UITextFieldDelegate {
         return true
     }
     
+    func didAddNewTask() {
+        let indexPath = IndexPath(row: tasks.count, section: 0)
+        guard let cell = tableView.cellForRow(at: indexPath) as? ListFullscreenCell else { return }
+        
+        cell.checkBoxButton.setImage(#imageLiteral(resourceName: "unchecked"), for: .normal)
+        cell.taskTextField.isEnabled = true
+        cell.taskTextField.inputAccessoryView = cav
+        cell.taskTextField.becomeFirstResponder()
+        cell.taskTextField.delegate = self
+    }
+    
     func addNewCell(newTask: Task) {
         tasks.append(newTask)
         let indexPath = IndexPath(row: tasks.count, section: 0)
-        tableView.beginUpdates()
         tableView.insertRows(at: [indexPath], with: .middle)
-        tableView.endUpdates()
-//        tableView.reloadData()
-//        updateTags()
     }
     
     func didCheckedTask(row: Int) {
@@ -251,9 +234,6 @@ extension ListFullscreenController: UITextFieldDelegate {
         cell.taskTextField.attributedText = attributeString
         cell.taskTextField.layer.add(transition, forKey: kCATransition)
         cell.checkBoxButton.setImage(#imageLiteral(resourceName: "checked"), for: .normal)
-        cell.taskTextField.attributedText = attributeString
-        cell.taskTextField.layer.add(transition, forKey: kCATransition)
-        cell.checkBoxButton.setImage(#imageLiteral(resourceName: "checked"), for: .normal)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.removeCellFrom(indexPath)
         }
@@ -261,17 +241,6 @@ extension ListFullscreenController: UITextFieldDelegate {
     
     func removeCellFrom(_ indexPath: IndexPath) {
         tasks.remove(at: indexPath.row)
-        tableView.beginUpdates()
         tableView.deleteRows(at: [indexPath], with: .top)
-        tableView.endUpdates()
-//        tableView.reloadData()
-//        updateTags()
-    }
-    
-    fileprivate func updateTags() {
-        (0..<items).forEach { (i) in
-            guard let cell = tableView.cellForRow(at: [i, 0]) as? ListFullscreenCell else { return }
-            cell.checkBoxButton.tag = i
-        }
     }
 }

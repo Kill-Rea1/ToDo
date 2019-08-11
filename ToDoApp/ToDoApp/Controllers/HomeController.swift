@@ -13,22 +13,14 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     fileprivate let todaysCellId = "todaysCell"
     fileprivate let listsCellId = "listsCell"
     fileprivate let padding: CGFloat = 16
-//    fileprivate let addButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        button.setImage(#imageLiteral(resourceName: "add"), for: .normal)
-//        button.tintColor = .blue
-//        button.addTarget(self, action: #selector(handleAdd), for: .touchUpInside)
-//        return button
-//    }()
     fileprivate var anchoredConstraints: AnchoredConstraints!
     fileprivate let items = 5
-    fileprivate var addController: AddController!
-    fileprivate var isShowingAdd = false
+    fileprivate let blurVisualEffect = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
     fileprivate lazy var topView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         let label = UILabel()
-        label.font = UIFont(name: CustomFont.semibold.rawValue, size: 34)
+        label.font = UIFont(name: Montserrat.semibold.rawValue, size: 34)
         label.text = "Today"
         label.backgroundColor = .white
         view.addSubview(label)
@@ -45,9 +37,9 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     fileprivate func setupViews() {
         view.addSubview(topView)
         topView.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.safeAreaLayoutGuide.topAnchor, padding: .init(top: 0, left: 0, bottom: -(padding * 5), right: 0))
-//        view.addSubview(addButton)
-//        addButton.addContstraints(leading: nil, top: nil, trailing: view.trailingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, padding: .init(top: 0, left: 0, bottom: padding, right: padding), size: .init(width: 76, height: 76))
-        
+        view.addSubview(blurVisualEffect)
+        blurVisualEffect.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor)
+        blurVisualEffect.alpha = 0
     }
     
     fileprivate func setupCollectionView() {
@@ -57,38 +49,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView.delaysContentTouches = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.contentInset.top = padding * 5
-    }
-    
-    @objc fileprivate func handleAdd(sender: UIButton) {
-        if !isShowingAdd {
-            addController = AddController()
-            addController.delegate = self
-            view.addSubview(addController.view)
-            addChild(addController)
-            addController.view.frame = view.frame
-            addController.view.alpha = 0
-        }
-        
-        view.bringSubviewToFront(sender)
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8, options: .curveEaseOut, animations: {
-            
-            if self.isShowingAdd {
-                sender.transform = .identity
-                self.addController.view.alpha = 0
-            } else {
-                let angle: CGFloat = 45 * CGFloat.pi / 180
-                sender.transform = CGAffineTransform(rotationAngle: angle)
-                self.addController.view.alpha = 1
-            }
-        }) { (_) in
-            if self.isShowingAdd {
-                self.addController.view.removeFromSuperview()
-                self.addController.removeFromParent()
-                self.isShowingAdd = false
-            } else {
-                self.isShowingAdd = true
-            }
-        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -129,11 +89,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     var startingPosition: CGRect!
 }
 
-extension HomeController: ListControllerDelegate, ListFullscreenControllerDelegate, UIGestureRecognizerDelegate, AddControllerDelegate {
-    
-    func dismiss() {
-//        handleAdd(sender: addButton)
-    }
+extension HomeController: ListControllerDelegate, ListFullscreenControllerDelegate, UIGestureRecognizerDelegate {
     
     func didSelectList(at position: CGRect) {
         startingPosition = position
@@ -158,7 +114,6 @@ extension HomeController: ListControllerDelegate, ListFullscreenControllerDelega
     fileprivate func createFullscreen(listFullscreenView: UIView, position: CGRect) {
         anchoredConstraints = listFullscreenView.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: nil, bottom: nil, padding: .init(top: position.origin.y, left: position.origin.x, bottom: 0, right: 0), size: .init(width: position.width, height: position.height))
         self.view.layoutIfNeeded()
-//        view.bringSubviewToFront(addButton)
         animate()
     }
     
@@ -182,11 +137,11 @@ extension HomeController: ListControllerDelegate, ListFullscreenControllerDelega
             scale = max(0.6, scale)
             let transform: CGAffineTransform = .init(scaleX: scale, y: scale)
             listFullscreen.view.transform = transform
-            if translationY > 100 {
+            if translationY > 150 {
                 gesture.state = .ended
             }
         } else if gesture.state == .ended {
-            if translationY > 100 {
+            if translationY > 150 {
                 didSizeToMini()
             } else {
                 UIView.animate(withDuration: 0.3) {
@@ -199,6 +154,7 @@ extension HomeController: ListControllerDelegate, ListFullscreenControllerDelega
     fileprivate func animate() {
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseOut, animations: {
             self.listFullscreen.view.layer.cornerRadius = 0
+            self.blurVisualEffect.alpha = 1
             self.anchoredConstraints?.top?.constant = 0
             self.anchoredConstraints?.leading?.constant = 0
             self.anchoredConstraints?.width?.constant = self.view.frame.width
@@ -211,6 +167,7 @@ extension HomeController: ListControllerDelegate, ListFullscreenControllerDelega
         listFullscreen.view.layer.cornerRadius = 14
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseOut, animations: {
             self.collectionView.isUserInteractionEnabled = false
+            self.blurVisualEffect.alpha = 0
             self.listFullscreen.tableView.contentOffset = .zero
             self.listFullscreen.view.transform = .identity
             self.anchoredConstraints?.top?.constant = self.startingPosition.origin.y
@@ -219,8 +176,8 @@ extension HomeController: ListControllerDelegate, ListFullscreenControllerDelega
             self.anchoredConstraints?.height?.constant = self.startingPosition.height
             self.view.layoutIfNeeded()
             self.listFullscreen.closeButton.alpha = 0
-            self.listFullscreen.headerView.headerLabel.font = UIFont(name: CustomFont.semibold.rawValue, size: 20)
-            self.listFullscreen.headerView.descriptionLabel.font = UIFont(name: CustomFont.regular.rawValue, size: 16)
+            self.listFullscreen.headerView.headerLabel.font = UIFont(name: Montserrat.semibold.rawValue, size: 20)
+            self.listFullscreen.headerView.descriptionLabel.font = UIFont(name: Montserrat.regular.rawValue, size: 16)
         }) { (_) in
             self.listFullscreen.view.removeFromSuperview()
             self.listFullscreen.removeFromParent()

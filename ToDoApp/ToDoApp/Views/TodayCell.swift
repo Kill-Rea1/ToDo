@@ -14,7 +14,6 @@ class TodayCell: BaseCollectionCell {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "unchecked").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addSize(size: .init(width: 48, height: 48))
-//        button.addTarget(self, action: #selector(handleTap), for: .touchUpInside)xr
         return button
     }()
     
@@ -22,7 +21,7 @@ class TodayCell: BaseCollectionCell {
         let label = UILabel()
         label.text = "TASK TEXT"
         label.numberOfLines = 0
-        label.font = UIFont(name: CustomFont.semibold.rawValue, size: 18)
+        label.font = UIFont(name: Montserrat.semibold.rawValue, size: 18)
         return label
     }()
     

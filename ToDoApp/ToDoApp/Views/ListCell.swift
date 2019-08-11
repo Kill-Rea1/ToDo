@@ -13,14 +13,14 @@ class ListCell: BaseCollectionCell {
     fileprivate let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Inbox"
-        label.font = UIFont(name: CustomFont.semibold.rawValue, size: 20)
+        label.font = UIFont(name: Montserrat.semibold.rawValue, size: 20)
         return label
     }()
     
     fileprivate let descrtiptionLabel: UILabel = {
         let label = UILabel()
         label.text = "1 task"
-        label.font = UIFont(name: CustomFont.regular.rawValue, size: 16)
+        label.font = UIFont(name: Montserrat.regular.rawValue, size: 16)
         label.textColor = .darkGray
         return label
     }()

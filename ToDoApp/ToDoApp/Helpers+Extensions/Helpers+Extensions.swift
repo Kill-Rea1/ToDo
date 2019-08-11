@@ -79,11 +79,6 @@ extension Notification.Name{
     static let timePicker = NSNotification.Name("timePicker")
 }
 
-enum CustomFont: String {
-    case semibold = "Montserrat-SemiBold"
-    case regular = "Montserrat-Regular"
-}
-
 class BaseCollectionController: UICollectionViewController {
     init() {
         super.init(collectionViewLayout: UICollectionViewFlowLayout())

@@ -18,18 +18,11 @@ class ListFullscreenCell: UITableViewCell {
         return button
     }()
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        dateLabel.text = ""
-    }
-    
     public var cav: CustomAccessoryView!
     
     public let taskTextField: UITextField = {
         let tf = UITextField()
-        tf.text = "REALLY LONG TASK WHICH WOULD BREAK MY AUTO SIZING MAY BE I BELIVE IT WON'T HAPPEN"
-        tf.font = UIFont(name: CustomFont.semibold.rawValue, size: 12)
+        tf.font = UIFont(name: Montserrat.semibold.rawValue, size: 12)
         tf.isEnabled = false
         tf.autocorrectionType = .no
         tf.returnKeyType = .done
@@ -38,7 +31,7 @@ class ListFullscreenCell: UITableViewCell {
     
     public let dateLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: CustomFont.regular.rawValue, size: 10)
+        label.font = UIFont(name: Montserrat.regular.rawValue, size: 10)
         return label
     }()
     
@@ -66,6 +59,12 @@ class ListFullscreenCell: UITableViewCell {
         stackView.spacing = 8
         addSubview(stackView)
         stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16))
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        dateLabel.text = ""
+        checkBoxButton.isUserInteractionEnabled = true
     }
     
     required init?(coder aDecoder: NSCoder) {

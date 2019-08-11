@@ -13,14 +13,14 @@ class HeaderView: UIView {
     public let headerLabel: UILabel = {
         let label = UILabel()
         label.text = "Inbox"
-        label.font = UIFont(name: CustomFont.semibold.rawValue, size: 26)
+        label.font = UIFont(name: Montserrat.semibold.rawValue, size: 26)
         return label
     }()
     
     public let descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "1 task"
-        label.font = UIFont(name: CustomFont.regular.rawValue, size: 20)
+        label.font = UIFont(name: Montserrat.regular.rawValue, size: 20)
         label.textColor = .darkGray
         return label
     }()

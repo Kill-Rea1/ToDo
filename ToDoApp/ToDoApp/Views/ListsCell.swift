@@ -14,7 +14,7 @@ class ListsCell: BaseCollectionCell {
     public var items = 0
     fileprivate let listsLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: CustomFont.regular.rawValue, size: 22)
+        label.font = UIFont(name: Montserrat.regular.rawValue, size: 22)
         label.text = "Lists"
         label.textColor = .lightGray
         return label
