@@ -8,6 +8,10 @@
 
 import UIKit
 
+//protocol TodayControllerDelegate: AnyObject {
+//    func didChecked()
+//}
+
 class TodayController: BaseCollectionController, UICollectionViewDelegateFlowLayout {
     
     fileprivate let todayCellId = "todayCell"
@@ -29,7 +33,28 @@ class TodayController: BaseCollectionController, UICollectionViewDelegateFlowLay
         if indexPath.item == 1 {
             cell.taskLabel.text = longTask
         }
+        cell.checkBoxButton.addTarget(self, action: #selector(handleCellButton), for: .touchUpInside)
         return cell
+    }
+    
+    @objc fileprivate func handleCellButton(sender: UIButton) {
+        let point = sender.convert(CGPoint.zero, to: collectionView)
+        guard let indexPath = collectionView.indexPathForItem(at: point) else { return }
+        didCheckedTask(indexPath: indexPath)
+    }
+    
+    fileprivate func didCheckedTask(indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TodayCell else { return }
+        let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: cell.taskLabel.text ?? "")
+        attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
+        let transition = CATransition()
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromTop
+        transition.duration = 0.3
+        cell.taskLabel.attributedText = attributeString
+        cell.taskLabel.layer.add(transition, forKey: kCATransition)
+        cell.checkBoxButton.setImage(#imageLiteral(resourceName: "checked"), for: .normal)
+        cell.checkBoxButton.isUserInteractionEnabled = false
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
