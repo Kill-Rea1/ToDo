@@ -18,6 +18,12 @@ class ListFullscreenCell: UITableViewCell {
         return button
     }()
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        dateLabel.text = ""
+    }
+    
     public var cav: CustomAccessoryView!
     
     public let taskTextField: UITextField = {

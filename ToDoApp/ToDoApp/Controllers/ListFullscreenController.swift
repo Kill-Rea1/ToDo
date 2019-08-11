@@ -14,6 +14,11 @@ protocol ListFullscreenControllerDelegate {
 
 class ListFullscreenController: UIViewController {
     
+    struct Task {
+        var task: String
+        var date: Date
+    }
+    
     fileprivate let listCellId = "listCell"
     public let closeButton: UIButton = {
         let button = UIButton(type: .system)
@@ -24,6 +29,10 @@ class ListFullscreenController: UIViewController {
     }()
     var delegate: ListFullscreenControllerDelegate?
     var items = 3
+    var tasks = [
+        Task(task: "Task 1", date: Date()),
+        Task(task: "Task 2", date: Date())
+    ]
     public let headerView = HeaderView()
     fileprivate lazy var cav = CustomAccessoryView(frame: .init(x: 0, y: 0, width: view.frame.width, height: 115))
     fileprivate var selectedDate: String!
@@ -130,15 +139,19 @@ class ListFullscreenController: UIViewController {
 
 extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items
+        return tasks.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: listCellId, for: indexPath) as! ListFullscreenCell
-        if indexPath.row == items - 1 {
+        if indexPath.row == tasks.count {
             cell.isTaskCell = false
         } else {
             cell.isTaskCell = true
+            cell.taskTextField.text = tasks[indexPath.row].task
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd MMMM, HH:mm"
+            cell.dateLabel.text = dateFormatter.string(from: tasks[indexPath.row].date)
         }
         cell.checkBoxButton.tag = indexPath.row
         cell.checkBoxButton.addTarget(self, action: #selector(handleButtonTapped), for: .touchUpInside)
@@ -148,7 +161,7 @@ extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
     @objc fileprivate func handleButtonTapped(sender: UIButton) {
         let point = sender.convert(CGPoint.zero, to: tableView)
         guard let indexPath = tableView.indexPathForRow(at: point) else { return }
-        if indexPath.row == items - 1 {
+        if indexPath.row == tasks.count {
             didAddNewTask()
         } else {
             didCheckedTask(row: indexPath.row)
@@ -167,7 +180,7 @@ extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
 
 extension ListFullscreenController: UITextFieldDelegate {
     func didAddNewTask() {
-        let indexPath = IndexPath(row: items - 1, section: 0)
+        let indexPath = IndexPath(row: tasks.count, section: 0)
         guard let cell = tableView.cellForRow(at: indexPath) as? ListFullscreenCell else { return }
         
         cell.checkBoxButton.setImage(#imageLiteral(resourceName: "unchecked"), for: .normal)
@@ -178,18 +191,32 @@ extension ListFullscreenController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let isEmty = textField.text?.isEmpty else { return }
-        let indexPath = IndexPath(row: items - 1, section: 0)
+//        guard let isEmty = textField.text?.isEmpty else { return }
+        let indexPath = IndexPath(row: tasks.count, section: 0)
         guard let cell = tableView.cellForRow(at: indexPath) as? ListFullscreenCell else { return }
-        if isEmty {
+//        if isEmty {
+//            cell.checkBoxButton.setImage(#imageLiteral(resourceName: "add"), for: .normal)
+//        } else {
+//            cell.isTaskCell = true
+//            let date = getDate(date: selectedDate, time: selectedTime)
+//            let dateFormatter = DateFormatter()
+//            dateFormatter.dateFormat = "dd MMMM, HH:mm"
+//            cell.dateLabel.text = dateFormatter.string(from: date)
+//            addNewCell()
+//        }
+//        cell.taskTextField.isEnabled = false
+        
+        guard let taskText = textField.text else { return }
+        if taskText.isEmpty {
             cell.checkBoxButton.setImage(#imageLiteral(resourceName: "add"), for: .normal)
         } else {
-            cell.isTaskCell = true
             let date = getDate(date: selectedDate, time: selectedTime)
+            cell.isTaskCell = true
+            let newTask = Task(task: taskText, date: date)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd MMMM, HH:mm"
-            cell.dateLabel.text = dateFormatter.string(from: date)
-            addNewCell()
+            cell.dateLabel.text = dateFormatter.string(from: newTask.date)
+            addNewCell(newTask: newTask)
         }
         cell.taskTextField.isEnabled = false
     }
@@ -201,9 +228,9 @@ extension ListFullscreenController: UITextFieldDelegate {
         return true
     }
     
-    func addNewCell() {
-        let indexPath = IndexPath(row: items, section: 0)
-        items += 1
+    func addNewCell(newTask: Task) {
+        tasks.append(newTask)
+        let indexPath = IndexPath(row: tasks.count, section: 0)
         tableView.beginUpdates()
         tableView.insertRows(at: [indexPath], with: .middle)
         tableView.endUpdates()
@@ -233,7 +260,7 @@ extension ListFullscreenController: UITextFieldDelegate {
     }
     
     func removeCellFrom(_ indexPath: IndexPath) {
-        items -= 1
+        tasks.remove(at: indexPath.row)
         tableView.beginUpdates()
         tableView.deleteRows(at: [indexPath], with: .top)
         tableView.endUpdates()
