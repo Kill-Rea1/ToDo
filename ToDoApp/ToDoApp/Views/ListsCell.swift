@@ -11,7 +11,6 @@ import UIKit
 class ListsCell: BaseCollectionCell {
     
     fileprivate let padding: CGFloat = 16
-    public var items = 0
     fileprivate let listsLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: Montserrat.regular.rawValue, size: 22)

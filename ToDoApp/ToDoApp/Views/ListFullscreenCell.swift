@@ -10,6 +10,16 @@ import UIKit
 
 class ListFullscreenCell: UITableViewCell {
     
+    public var task: Task! {
+        didSet {
+            taskTextField.text = task.task
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd MMMM, HH:mm"
+            dateLabel.text = dateFormatter.string(from: task.date ?? Date())
+            backgroundColor = task.color
+        }
+    }
+    
     public let checkBoxButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "unchecked"), for: .normal)
@@ -22,7 +32,7 @@ class ListFullscreenCell: UITableViewCell {
     
     public let taskTextField: UITextField = {
         let tf = UITextField()
-        tf.font = UIFont(name: Montserrat.semibold.rawValue, size: 12)
+        tf.font = UIFont(name: Montserrat.semibold.rawValue, size: 14)
         tf.isEnabled = false
         tf.autocorrectionType = .no
         tf.returnKeyType = .done
@@ -31,7 +41,7 @@ class ListFullscreenCell: UITableViewCell {
     
     public let dateLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: Montserrat.regular.rawValue, size: 10)
+        label.font = UIFont(name: Montserrat.regular.rawValue, size: 12)
         return label
     }()
     
@@ -47,13 +57,11 @@ class ListFullscreenCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
-        
-        let taskDateStackView = UIStackView(arrangedSubviews: [taskTextField, dateLabel])
-        taskDateStackView.axis = .vertical
+        let taskInfoStackView = UIStackView(arrangedSubviews: [taskTextField, dateLabel])
+        taskInfoStackView.axis = .vertical
         
         let stackView = UIStackView(arrangedSubviews: [
-            checkBoxButton, taskDateStackView
+            checkBoxButton, taskInfoStackView
             ])
         stackView.alignment = .center
         stackView.spacing = 8

@@ -10,6 +10,13 @@ import UIKit
 
 class TodayCell: BaseCollectionCell {
     
+    public var task: Task! {
+        didSet {
+            taskLabel.text = task.task
+            listIndicator.backgroundColor = task.color
+        }
+    }
+    
     public let checkBoxButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "unchecked").withRenderingMode(.alwaysOriginal), for: .normal)
@@ -28,8 +35,8 @@ class TodayCell: BaseCollectionCell {
     fileprivate let listIndicator: UIView = {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
-        view.addSize(size: .init(width: 10, height: 10))
-        view.layer.cornerRadius = 5
+        view.addSize(size: .init(width: 15, height: 15))
+        view.layer.cornerRadius = 7.5
         return view
     }()
     

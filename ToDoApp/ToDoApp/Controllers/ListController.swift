@@ -8,20 +8,21 @@
 
 import UIKit
 
-protocol ListControllerDelegate {
-    func didSelectList(at position: CGRect)
+protocol ListControllerDelegate: class {
+    func didSelectList(at position: CGRect, selectedList: List)
+    func didDeleteList()
 }
 
 class ListController: BaseCollectionController, UICollectionViewDelegateFlowLayout {
     
     fileprivate let cellId = "listCell"
-    public var items = 0 {
+    public var lists = [List]() {
         didSet {
             collectionView.reloadData()
         }
     }
     var startingFrame: CGRect!
-    var delegate: ListControllerDelegate?
+    weak var delegate: ListControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,14 +30,35 @@ class ListController: BaseCollectionController, UICollectionViewDelegateFlowLayo
         collectionView.register(ListCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.delaysContentTouches = false
+        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        collectionView.addGestureRecognizer(longGesture)
+    }
+    
+    @objc fileprivate func handleLongPress(gesture: UILongPressGestureRecognizer) {
+        let pressLocation = gesture.location(in: collectionView)
+        guard let indexPath = collectionView.indexPathForItem(at: pressLocation) else { return }
+        let alertController = UIAlertController(title: "Remove List?", message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (_) in
+            let selectedList = self.lists[indexPath.item]
+            CoreDataManager.shared.deleteList(selectedList, completion: { [weak self] (err) in
+                if err != nil {
+                    return
+                }
+                self?.lists.remove(at: indexPath.item)
+                self?.delegate?.didDeleteList()
+            })
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(alertController, animated: true)
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items
+        return lists.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ListCell
+        cell.list = lists[indexPath.item]
         return cell
     }
     
@@ -48,7 +70,8 @@ class ListController: BaseCollectionController, UICollectionViewDelegateFlowLayo
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         startingCellFrame(indexPath)
-        delegate?.didSelectList(at: startingFrame)
+        let selectedList = lists[indexPath.item]
+        delegate?.didSelectList(at: startingFrame, selectedList: selectedList)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

@@ -101,3 +101,36 @@ class BaseCollectionCell: UICollectionViewCell {
     
     func setupViews() {}
 }
+
+extension NSAttributedString {
+    
+    func strikedAttributedString(fraction: Double = 1) -> NSAttributedString {
+        let range = NSRange(0..<Int(fraction * Double(length)))
+        return strike(with: .thick, range: range)
+    }
+    
+//    var unstrikedAttributedString: NSAttributedString {
+//        return strike(with: .none)
+//    }
+    
+    private func strike(with style: NSUnderlineStyle, range: NSRange? = nil) -> NSAttributedString {
+        let mutableAttributedString = NSMutableAttributedString(attributedString: self)
+        let attributeName = NSAttributedString.Key.strikethroughStyle
+        let fullRange = NSRange(0..<length)
+        mutableAttributedString.removeAttribute(attributeName, range: fullRange)
+        mutableAttributedString.addAttribute(attributeName, value: style.rawValue, range: range ?? fullRange)
+        
+        return mutableAttributedString
+    }
+    
+}
+
+
+extension UITextField {
+    
+    func strike(fraction: Double = 1) {
+        attributedText = attributedText?.strikedAttributedString(fraction: fraction)
+    }
+    
+}
+

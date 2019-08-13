@@ -7,18 +7,30 @@
 //
 
 import UIKit
+import CoreData
 
-protocol ListFullscreenControllerDelegate {
+protocol ListFullscreenControllerDelegate: class {
     func didSizeToMini()
 }
 
 class ListFullscreenController: UIViewController {
     
-    struct Task {
-        var task: String
-        var date: Date
+    public var list: List! {
+        didSet {
+            guard let list = list else { return }
+            headerView.headerLabel.text = list.name
+            headerView.backgroundColor = list.color
+            view.backgroundColor = list.color
+            tableView.backgroundColor = list.color
+        }
     }
     
+    fileprivate var tasks = [Task]() {
+        didSet {
+            let count = list.tasks?.count ?? 0
+            headerView.descriptionLabel.text = count == 1 ? "\(count) Task" : "\(count) Tasks"
+        }
+    }
     fileprivate let listCellId = "listCell"
     public let closeButton: UIButton = {
         let button = UIButton(type: .system)
@@ -27,11 +39,7 @@ class ListFullscreenController: UIViewController {
         button.addTarget(self, action: #selector(handleClose), for: .touchUpInside)
         return button
     }()
-    var delegate: ListFullscreenControllerDelegate?
-    var tasks = [
-        Task(task: "Task 1", date: Date()),
-        Task(task: "Task 2", date: Date())
-    ]
+    weak var delegate: ListFullscreenControllerDelegate?
     public let headerView = HeaderView()
     fileprivate lazy var cav = CustomAccessoryView(frame: .init(x: 0, y: 0, width: view.frame.width, height: 115))
     fileprivate var selectedDate: String!
@@ -41,17 +49,27 @@ class ListFullscreenController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         setupTableView()
         setupButtons()
         setupDefaultTime()
         setupNotifications()
+        fetchTasks()
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    fileprivate func fetchTasks() {
+        tasks = []
+        guard var tasks = list.tasks?.allObjects as? [Task] else { return }
+        tasks.sort { (task1, task2) -> Bool in
+            guard let date1 = task1.date, let date2 = task2.date else { return true }
+            return date1 < date2
+        }
+        self.tasks = tasks
     }
     
     fileprivate func setupDefaultTime() {
@@ -63,11 +81,12 @@ class ListFullscreenController: UIViewController {
     fileprivate func setupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleDatePicked), name: .datePicker, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleTimePicked), name: .timePicker, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardDidShowNotification, object: nil)
     }
     
     @objc fileprivate func handleDatePicked(notification: Notification) {
         guard let date = notification.object as? Date else { return }
-        turnDateToString(date: date, format: "dd MMMM")
+        turnDateToString(date: date, format: "MMMM dd")
     }
     
     @objc fileprivate func handleTimePicked(notification: Notification) {
@@ -100,7 +119,6 @@ class ListFullscreenController: UIViewController {
     fileprivate func setupTableView() {
         view.addSubview(tableView)
         tableView.addContstraints(leading: view.leadingAnchor, top: view.safeAreaLayoutGuide.topAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor)
-        tableView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
@@ -113,6 +131,7 @@ class ListFullscreenController: UIViewController {
         tableView.delaysContentTouches = false
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 600
+        tableView.keyboardDismissMode = .interactive
     }
     
     fileprivate func setupButtons() {
@@ -144,14 +163,12 @@ extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: listCellId, for: indexPath) as! ListFullscreenCell
         if indexPath.row == tasks.count {
             cell.isTaskCell = false
+            cell.backgroundColor = list.color
         } else {
+            let task = tasks[indexPath.row]
             cell.isTaskCell = true
-            cell.taskTextField.text = tasks[indexPath.row].task
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd MMMM, HH:mm"
-            cell.dateLabel.text = dateFormatter.string(from: tasks[indexPath.row].date)
+            cell.task = task
         }
-        cell.checkBoxButton.tag = indexPath.row
         cell.checkBoxButton.addTarget(self, action: #selector(handleButtonTapped), for: .touchUpInside)
         return cell
     }
@@ -162,7 +179,7 @@ extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
         if indexPath.row == tasks.count {
             didAddNewTask()
         } else {
-            didCheckedTask(row: indexPath.row)
+            didCheckedTask(indexPath: indexPath)
             sender.isUserInteractionEnabled = false
         }
     }
@@ -179,7 +196,7 @@ extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
 extension ListFullscreenController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        let indexPath = IndexPath(row: tasks.count, section: 0)
+        let indexPath = IndexPath(row: (tasks.count), section: 0)
         guard let cell = tableView.cellForRow(at: indexPath) as? ListFullscreenCell else { return }
         
         guard let taskText = textField.text else { return }
@@ -188,13 +205,27 @@ extension ListFullscreenController: UITextFieldDelegate {
         } else {
             let date = getDate(date: selectedDate, time: selectedTime)
             cell.isTaskCell = true
-            let newTask = Task(task: taskText, date: date)
+            saveTask(taskText: taskText, date: date)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd MMMM, HH:mm"
-            cell.dateLabel.text = dateFormatter.string(from: newTask.date)
-            addNewCell(newTask: newTask)
+            cell.dateLabel.text = dateFormatter.string(from: date)
         }
         cell.taskTextField.isEnabled = false
+    }
+    
+    fileprivate func saveTask(taskText: String, date: Date) {
+        let task = NSEntityDescription.insertNewObject(forEntityName: "Task", into: CoreDataManager.shared.persistentContainer.viewContext)
+        task.setValue(taskText, forKey: "task")
+        task.setValue(date, forKey: "date")
+        task.setValue(list, forKey: "list")
+        task.setValue(list.colorAsHex, forKey: "colorAsHex")
+        task.setValue(false, forKey: "isDone")
+        CoreDataManager.shared.saveTask(task as! Task) { [weak self] (err) in
+            if err != nil {
+                return
+            }
+            self?.addNewCell(newTask: task as! Task)
+        }
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -218,11 +249,12 @@ extension ListFullscreenController: UITextFieldDelegate {
     func addNewCell(newTask: Task) {
         tasks.append(newTask)
         let indexPath = IndexPath(row: tasks.count, section: 0)
+        tableView.beginUpdates()
         tableView.insertRows(at: [indexPath], with: .middle)
+        tableView.endUpdates()
     }
     
-    func didCheckedTask(row: Int) {
-        let indexPath = IndexPath(row: row, section: 0)
+    func didCheckedTask(indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? ListFullscreenCell else { return }
         let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: cell.taskTextField.text ?? "")
         cell.taskTextField.text = ""
@@ -240,7 +272,14 @@ extension ListFullscreenController: UITextFieldDelegate {
     }
     
     func removeCellFrom(_ indexPath: IndexPath) {
-        tasks.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .top)
+        CoreDataManager.shared.deleteTask(tasks[indexPath.row]) { [weak self] (err) in
+            if err != nil {
+                return
+            }
+            self?.tasks.remove(at: indexPath.row)
+            self?.tableView.beginUpdates()
+            self?.tableView.deleteRows(at: [indexPath], with: .top)
+            self?.tableView.endUpdates()
+        }
     }
 }

@@ -26,6 +26,11 @@
 		ED67E4BA22FDDE9E00A077CF /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4B922FDDE9E00A077CF /* HeaderView.swift */; };
 		ED67E4C322FE1C4200A077CF /* CustomAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67E4C222FE1C4200A077CF /* CustomAccessoryView.swift */; };
 		ED87F2E322FF9A78001BE2B8 /* Montserrat.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED87F2E222FF9A78001BE2B8 /* Montserrat.swift */; };
+		ED87F2E52301BA40001BE2B8 /* AddListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED87F2E42301BA40001BE2B8 /* AddListController.swift */; };
+		ED87F2E72301CF2F001BE2B8 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED87F2E62301CF2F001BE2B8 /* ColorCell.swift */; };
+		ED87F2EF2302FB91001BE2B8 /* ToDoAppModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = ED87F2ED2302FB91001BE2B8 /* ToDoAppModel.xcdatamodeld */; };
+		ED87F2F12302FDA1001BE2B8 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED87F2F02302FDA1001BE2B8 /* UIColorExtension.swift */; };
+		ED87F2F423032454001BE2B8 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED87F2F323032454001BE2B8 /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +55,11 @@
 		ED67E4B922FDDE9E00A077CF /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		ED67E4C222FE1C4200A077CF /* CustomAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAccessoryView.swift; sourceTree = "<group>"; };
 		ED87F2E222FF9A78001BE2B8 /* Montserrat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Montserrat.swift; sourceTree = "<group>"; };
+		ED87F2E42301BA40001BE2B8 /* AddListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListController.swift; sourceTree = "<group>"; };
+		ED87F2E62301CF2F001BE2B8 /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
+		ED87F2EE2302FB91001BE2B8 /* ToDoAppModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ToDoAppModel.xcdatamodel; sourceTree = "<group>"; };
+		ED87F2F02302FDA1001BE2B8 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		ED87F2F323032454001BE2B8 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +92,7 @@
 		ED67E48B22FC859600A077CF /* ToDoApp */ = {
 			isa = PBXGroup;
 			children = (
+				ED87F2F223032443001BE2B8 /* CoreDataManager */,
 				ED67E4AA22FCB40200A077CF /* Helpers+Extensions */,
 				ED67E4A822FCB3DB00A077CF /* Views */,
 				ED67E4A722FCB3BA00A077CF /* Controllers */,
@@ -89,6 +100,7 @@
 				ED67E4A922FCB3E800A077CF /* Support Files */,
 				ED67E48C22FC859600A077CF /* AppDelegate.swift */,
 				ED67E49022FC859600A077CF /* Main.storyboard */,
+				ED87F2ED2302FB91001BE2B8 /* ToDoAppModel.xcdatamodeld */,
 			);
 			path = ToDoApp;
 			sourceTree = "<group>";
@@ -110,6 +122,7 @@
 				ED67E4AB22FCB49600A077CF /* ListController.swift */,
 				ED67E4B122FCBC7C00A077CF /* TodayController.swift */,
 				ED67E4B522FDBD6400A077CF /* ListFullscreenController.swift */,
+				ED87F2E42301BA40001BE2B8 /* AddListController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -124,6 +137,7 @@
 				ED67E4B722FDD1B900A077CF /* ListFullscreenCell.swift */,
 				ED67E4B922FDDE9E00A077CF /* HeaderView.swift */,
 				ED67E4C222FE1C4200A077CF /* CustomAccessoryView.swift */,
+				ED87F2E62301CF2F001BE2B8 /* ColorCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -142,8 +156,17 @@
 			isa = PBXGroup;
 			children = (
 				ED67E4A022FC8B0200A077CF /* Helpers+Extensions.swift */,
+				ED87F2F02302FDA1001BE2B8 /* UIColorExtension.swift */,
 			);
 			path = "Helpers+Extensions";
+			sourceTree = "<group>";
+		};
+		ED87F2F223032443001BE2B8 /* CoreDataManager */ = {
+			isa = PBXGroup;
+			children = (
+				ED87F2F323032454001BE2B8 /* CoreDataManager.swift */,
+			);
+			path = CoreDataManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -225,8 +248,13 @@
 				ED67E4B622FDBD6400A077CF /* ListFullscreenController.swift in Sources */,
 				ED67E4B422FCBD4E00A077CF /* TodayCell.swift in Sources */,
 				ED67E4AC22FCB49600A077CF /* ListController.swift in Sources */,
+				ED87F2F12302FDA1001BE2B8 /* UIColorExtension.swift in Sources */,
+				ED87F2E52301BA40001BE2B8 /* AddListController.swift in Sources */,
 				ED67E4A122FC8B0200A077CF /* Helpers+Extensions.swift in Sources */,
+				ED87F2EF2302FB91001BE2B8 /* ToDoAppModel.xcdatamodeld in Sources */,
 				ED67E4BA22FDDE9E00A077CF /* HeaderView.swift in Sources */,
+				ED87F2F423032454001BE2B8 /* CoreDataManager.swift in Sources */,
+				ED87F2E72301CF2F001BE2B8 /* ColorCell.swift in Sources */,
 				ED67E4AE22FCB83400A077CF /* ListCell.swift in Sources */,
 				ED67E4B222FCBC7C00A077CF /* TodayController.swift in Sources */,
 				ED87F2E322FF9A78001BE2B8 /* Montserrat.swift in Sources */,
@@ -434,6 +462,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		ED87F2ED2302FB91001BE2B8 /* ToDoAppModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				ED87F2EE2302FB91001BE2B8 /* ToDoAppModel.xcdatamodel */,
+			);
+			currentVersion = ED87F2EE2302FB91001BE2B8 /* ToDoAppModel.xcdatamodel */;
+			path = ToDoAppModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = ED67E48122FC859600A077CF /* Project object */;
 }
