@@ -72,6 +72,10 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     })
                 }
             }
+            self.todayTasks.sort(by: { (task1, task2) -> Bool in
+                guard let date1 = task1.date, let date2 = task2.date else { return true }
+                return date1 < date2
+            })
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }

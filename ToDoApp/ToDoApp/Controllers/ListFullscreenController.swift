@@ -74,7 +74,7 @@ class ListFullscreenController: UIViewController {
     
     fileprivate func setupDefaultTime() {
         let currentDate = Date()
-        turnDateToString(date: currentDate, format: "dd MMMM")
+        turnDateToString(date: currentDate, format: "MMMM dd yyyy")
         turnDateToString(date: currentDate, format: "HH:mm")
     }
     
@@ -86,7 +86,7 @@ class ListFullscreenController: UIViewController {
     
     @objc fileprivate func handleDatePicked(notification: Notification) {
         guard let date = notification.object as? Date else { return }
-        turnDateToString(date: date, format: "MMMM dd")
+        turnDateToString(date: date, format: "MMMM dd yyyy")
     }
     
     @objc fileprivate func handleTimePicked(notification: Notification) {
@@ -110,7 +110,7 @@ class ListFullscreenController: UIViewController {
     
     fileprivate func getDate(date: String, time: String) -> Date {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMMM dd, HH:mm"
+        dateFormatter.dateFormat = "MMMM dd yyyy, HH:mm"
         let string = date + ", " + time
         guard let date = dateFormatter.date(from: string) else { return Date() }
         return date
