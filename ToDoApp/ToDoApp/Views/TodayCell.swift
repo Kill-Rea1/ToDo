@@ -14,6 +14,9 @@ class TodayCell: BaseCollectionCell {
         didSet {
             taskLabel.text = task.task
             listIndicator.backgroundColor = task.color
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "HH:mm"
+            timeLabel.text = "At \(dateFormatter.string(from: task.date ?? Date()))"
         }
     }
     
@@ -32,6 +35,12 @@ class TodayCell: BaseCollectionCell {
         return label
     }()
     
+    fileprivate let timeLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: Montserrat.regular.rawValue, size: 16)
+        return label
+    }()
+    
     fileprivate let listIndicator: UIView = {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
@@ -42,8 +51,13 @@ class TodayCell: BaseCollectionCell {
     
     override func setupViews() {
         super.setupViews()
+        
+        let taskInfoStackView = UIStackView(arrangedSubviews: [taskLabel, timeLabel])
+        taskInfoStackView.spacing = 4
+        taskInfoStackView.axis = .vertical
+        
         let stackView = UIStackView(arrangedSubviews: [
-            checkBoxButton, taskLabel, listIndicator
+            checkBoxButton, taskInfoStackView, listIndicator
             ])
         stackView.alignment = .center
         addSubview(stackView)

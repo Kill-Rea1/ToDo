@@ -265,8 +265,6 @@ extension HomeController: ListControllerDelegate, ListFullscreenControllerDelega
     
     func didSizeToMini() {
         listFullscreen.view.endEditing(true)
-        collectionView.reloadData()
-        fetchTodayTasks()
         listFullscreen.view.layer.cornerRadius = 14
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseOut, animations: {
             self.collectionView.isUserInteractionEnabled = false
@@ -285,6 +283,8 @@ extension HomeController: ListControllerDelegate, ListFullscreenControllerDelega
             self.listFullscreen.view.removeFromSuperview()
             self.listFullscreen.removeFromParent()
             self.collectionView.isUserInteractionEnabled = true
+            self.collectionView.reloadData()
+            self.fetchTodayTasks()
         }
     }
 }
