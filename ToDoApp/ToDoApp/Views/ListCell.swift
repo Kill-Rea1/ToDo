@@ -44,7 +44,6 @@ class ListCell: BaseCollectionCell {
     
     override func setupViews() {
         super.setupViews()
-//        backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         layer.cornerRadius = 14
         let stackView = UIStackView(arrangedSubviews: [
             titleLabel, descrtiptionLabel

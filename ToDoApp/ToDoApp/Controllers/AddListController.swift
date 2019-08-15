@@ -151,7 +151,10 @@ class AddListController: UIViewController {
     }
     
     @objc fileprivate func handleSave() {
-        guard let listName = listNameTextField.text, listName != "" else { return }
+        guard let listName = listNameTextField.text, listName != "" else {
+            didEmptyListNameSave()
+            return
+        }
         let selectedColor = colorSet[selectedColorIndex]
         let list = NSEntityDescription.insertNewObject(forEntityName: "List", into: CoreDataManager.shared.persistentContainer.viewContext)
         list.setValue(listName, forKey: "name")
@@ -162,6 +165,20 @@ class AddListController: UIViewController {
             }
             self?.delegate?.didAddList(newList: list as! List)
         }
+    }
+    
+    fileprivate func didEmptyListNameSave() {
+        let center = listNameTextField.center
+        listNameTextField.layer.borderColor = UIColor.red.cgColor
+        
+        let shakeAnimation = CABasicAnimation(keyPath: "position")
+        shakeAnimation.duration = 0.07
+        shakeAnimation.repeatCount = 4
+        shakeAnimation.autoreverses = true
+        shakeAnimation.fromValue = NSValue(cgPoint: .init(x: center.x - 10, y: center.y))
+        shakeAnimation.toValue = NSValue(cgPoint: .init(x: center.x + 10, y: center.y))
+        
+        listNameTextField.layer.add(shakeAnimation, forKey: "position")
     }
 }
 
@@ -192,5 +209,9 @@ extension AddListController: UITextFieldDelegate, UIGestureRecognizerDelegate {
             textField.resignFirstResponder()
         }
         return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.layer.borderColor = UIColor.black.cgColor
     }
 }

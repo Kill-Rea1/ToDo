@@ -47,7 +47,7 @@ class TodayCell: BaseCollectionCell {
             ])
         stackView.alignment = .center
         addSubview(stackView)
-        stackView.spacing = 4
+        stackView.spacing = 8
         stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 12, left: 8, bottom: 12, right: 16))
         separatorView()
     }
@@ -56,6 +56,6 @@ class TodayCell: BaseCollectionCell {
         let separatorView = UIView()
         addSubview(separatorView)
         separatorView.backgroundColor = UIColor(white: 0.6, alpha: 0.5)
-        separatorView.addContstraints(leading: leadingAnchor, top: nil, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 0, left: 60, bottom: 0, right: 0), size: .init(width: 0, height: 0.5))
+        separatorView.addContstraints(leading: leadingAnchor, top: nil, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 0, left: 64, bottom: 0, right: 0), size: .init(width: 0, height: 0.5))
     }
 }

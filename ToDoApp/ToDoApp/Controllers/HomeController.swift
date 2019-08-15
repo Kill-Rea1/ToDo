@@ -129,7 +129,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     fileprivate func setupViews() {
         view.addSubview(topView)
-        topView.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.safeAreaLayoutGuide.topAnchor, padding: .init(top: 0, left: 0, bottom: -(padding * 5), right: 0))
+        topView.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.safeAreaLayoutGuide.topAnchor, padding: .init(top: 0, left: padding, bottom: -(padding * 5), right: 0))
         view.addSubview(addListButton)
         addListButton.addContstraints(leading: view.leadingAnchor, top: nil, trailing: nil, bottom: view.safeAreaLayoutGuide.bottomAnchor, padding: .init(top: 0, left: 8, bottom: 16, right: 0), size: .init(width: 68, height: 68))
         view.addSubview(blurVisualEffect)
