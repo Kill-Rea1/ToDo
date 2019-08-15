@@ -39,6 +39,7 @@ class AddListController: UIViewController {
     
     fileprivate let colorCellId = "colorCell"
     fileprivate var selectedColorIndex = 0
+    fileprivate let colorSet: [UIColor] = [#colorLiteral(red: 0.7131453753, green: 0.4719424248, blue: 0.998932898, alpha: 1), #colorLiteral(red: 1, green: 0.9040154815, blue: 0.3817251325, alpha: 1), #colorLiteral(red: 0.9550090432, green: 0.3695322275, blue: 0.4263010621, alpha: 1), #colorLiteral(red: 0.3783579469, green: 0.8703571558, blue: 0.6418835521, alpha: 1), #colorLiteral(red: 0.05490196078, green: 0.6039215686, blue: 0.6549019608, alpha: 1), #colorLiteral(red: 0.9960784314, green: 0.5411764706, blue: 0.4431372549, alpha: 1), #colorLiteral(red: 0.5215686275, green: 0.1176470588, blue: 0.2431372549, alpha: 1), #colorLiteral(red: 0.9647058824, green: 0.6705882353, blue: 0.7137254902, alpha: 1), #colorLiteral(red: 0.2941176471, green: 0.5254901961, blue: 0.7058823529, alpha: 1)]
     weak var delegate: AddListControllerDelegate?
     
     fileprivate let blurVisualEffect = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
@@ -52,7 +53,7 @@ class AddListController: UIViewController {
         v.addSubview(selectColorLabel)
         selectColorLabel.addContstraints(leading: v.leadingAnchor, top: listNameTextField.bottomAnchor, trailing: v.trailingAnchor, bottom: nil, padding: .init(top: 8, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 30))
         v.addSubview(colorCollectionView)
-        colorCollectionView.addContstraints(leading: v.leadingAnchor, top: selectColorLabel.bottomAnchor, trailing: v.trailingAnchor, bottom: v.bottomAnchor, padding: .init(top: 8, left: 16, bottom: 0, right: 16))
+        colorCollectionView.addContstraints(leading: v.leadingAnchor, top: selectColorLabel.bottomAnchor, trailing: v.trailingAnchor, bottom: v.bottomAnchor, padding: .init(top: 8, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 120))
         v.layer.cornerRadius = 14
         return v
     }()
@@ -94,20 +95,55 @@ class AddListController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupViews()
+        setupCollectionView()
+        setupNotifications()
+    }
+    
+    fileprivate func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleShowKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleHideKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc fileprivate func handleShowKeyboard(notification: Notification) {
+        guard let userInfo = notification.userInfo else { return }
+        guard let value = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let keyboardFrame = value.cgRectValue
+        let bottomSpace = view.frame.height - contentView.frame.origin.y - contentView.frame.height
+        let difference = keyboardFrame.height - bottomSpace
+        if difference > 0 {
+            view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)
+        }
+    }
+    
+    @objc fileprivate func handleHideKeyboard() {
+        view.transform = .identity
+    }
+    
+    fileprivate func setupViews() {
         view.backgroundColor = .clear
         view.addSubview(blurVisualEffect)
         blurVisualEffect.addContstraints(leading: view.leadingAnchor, top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor)
         view.addSubview(contentView)
-        contentView.addContstraints(leading: view.leadingAnchor, top: nil, trailing: view.trailingAnchor, bottom: nil, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 200))
+        contentView.addContstraints(leading: view.leadingAnchor, top: nil, trailing: view.trailingAnchor, bottom: nil, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 0))
         contentView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         view.addSubview(saveButton)
         saveButton.addContstraints(leading: nil, top: nil, trailing: view.trailingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, padding: .init(top: 0, left: 0, bottom: 16, right: 8), size: .init(width: 68, height: 68))
+        blurVisualEffect.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
+        listNameTextField.delegate = self
+    }
+    
+    fileprivate func setupCollectionView() {
         colorCollectionView.backgroundColor = .white
         colorCollectionView.delegate = self
         colorCollectionView.dataSource = self
         colorCollectionView.register(ColorCell.self, forCellWithReuseIdentifier: colorCellId)
-        blurVisualEffect.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
-        listNameTextField.delegate = self
+        let selectedIndexPath = IndexPath(item: 0, section: 0)
+        colorCollectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: [])
+    }
+    
+    @objc fileprivate func handleDismiss() {
+        view.endEditing(true)
     }
     
     @objc fileprivate func handleTap() {
@@ -127,8 +163,6 @@ class AddListController: UIViewController {
             self?.delegate?.didAddList(newList: list as! List)
         }
     }
-    
-    let colorSet: [UIColor] = [#colorLiteral(red: 0.7131453753, green: 0.4719424248, blue: 0.998932898, alpha: 1), #colorLiteral(red: 1, green: 0.9040154815, blue: 0.3817251325, alpha: 1), #colorLiteral(red: 0.9550090432, green: 0.3695322275, blue: 0.4263010621, alpha: 1), #colorLiteral(red: 0.3783579469, green: 0.8703571558, blue: 0.6418835521, alpha: 1), #colorLiteral(red: 0.9227407575, green: 0.9376927018, blue: 0.9588723779, alpha: 1)]
 }
 
 extension AddListController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -151,7 +185,7 @@ extension AddListController: UICollectionViewDelegate, UICollectionViewDataSourc
     }
 }
 
-extension AddListController: UITextFieldDelegate {
+extension AddListController: UITextFieldDelegate, UIGestureRecognizerDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if string == "\n" {

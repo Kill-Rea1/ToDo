@@ -8,24 +8,12 @@
 
 import UIKit
 
-class ColorCell: UICollectionViewCell {
+class ColorCell: BaseCollectionCell {
     var color: UIColor! {
         didSet {
             backgroundColor = color
         }
     }
-    
-//    override var isHighlighted: Bool {
-//        didSet {
-//            if isHighlighted {
-//                layer.borderWidth = 2
-//                layer.borderColor = UIColor.blue.cgColor
-//            } else {
-//                layer.borderWidth = 0
-//                layer.borderColor = UIColor.clear.cgColor
-//            }
-//        }
-//    }
     
     override var isSelected: Bool {
         didSet {
@@ -39,13 +27,8 @@ class ColorCell: UICollectionViewCell {
         }
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override func setupViews() {
+        super.setupViews()
         layer.cornerRadius = frame.height / 2
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError()
     }
 }
