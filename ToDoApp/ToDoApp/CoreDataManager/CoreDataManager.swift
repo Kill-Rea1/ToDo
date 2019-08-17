@@ -22,6 +22,15 @@ struct CoreDataManager {
         return container
     }()
     
+    func saveChanges() {
+        let context = CoreDataManager.shared.persistentContainer.viewContext
+        do {
+            try context.save()
+        } catch let saveError {
+            print("Failed to save changes", saveError)
+        }
+    }
+    
     func fetchCompanies() -> [List] {
         let context = CoreDataManager.shared.persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<List>(entityName: "List")

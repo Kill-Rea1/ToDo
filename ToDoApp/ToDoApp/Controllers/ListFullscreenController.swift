@@ -265,21 +265,9 @@ extension ListFullscreenController: UITextFieldDelegate {
         transition.duration = 0.3
         cell.taskTextField.attributedText = attributeString
         cell.taskTextField.layer.add(transition, forKey: kCATransition)
-        cell.checkBoxButton.setImage(#imageLiteral(resourceName: "checked"), for: .normal)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.removeCellFrom(indexPath)
-        }
-    }
-    
-    func removeCellFrom(_ indexPath: IndexPath) {
-        CoreDataManager.shared.deleteTask(tasks[indexPath.row]) { [weak self] (err) in
-            if err != nil {
-                return
-            }
-            self?.tasks.remove(at: indexPath.row)
-            self?.tableView.beginUpdates()
-            self?.tableView.deleteRows(at: [indexPath], with: .top)
-            self?.tableView.endUpdates()
-        }
+        cell.checkBoxButton.setImage(#imageLiteral(resourceName: "checkmark"), for: .normal)
+        let task = tasks[indexPath.row]
+        task.isDone = !task.isDone
+        CoreDataManager.shared.saveChanges()
     }
 }

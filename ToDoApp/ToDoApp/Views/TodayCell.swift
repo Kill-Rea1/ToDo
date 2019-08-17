@@ -17,12 +17,19 @@ class TodayCell: BaseCollectionCell {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "HH:mm"
             timeLabel.text = "At \(dateFormatter.string(from: task.date ?? Date()))"
+            checkBoxButton.tintColor = task.color
+            if task.isDone {
+                checkBoxButton.setImage(#imageLiteral(resourceName: "checked"), for: .normal)
+                let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: task.task ?? "")
+                attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
+                taskLabel.attributedText = attributeString
+            }
         }
     }
     
     public let checkBoxButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "unchecked").withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "unchecked"), for: .normal)
         button.addSize(size: .init(width: 48, height: 48))
         return button
     }()
@@ -64,6 +71,10 @@ class TodayCell: BaseCollectionCell {
         stackView.spacing = 8
         stackView.addContstraints(leading: leadingAnchor, top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, padding: .init(top: 12, left: 8, bottom: 12, right: 16))
         separatorView()
+    }
+    
+    override func prepareForReuse() {
+        checkBoxButton.setImage(#imageLiteral(resourceName: "unchecked"), for: .normal)
     }
     
     fileprivate func separatorView() {

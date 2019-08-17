@@ -17,6 +17,12 @@ class ListFullscreenCell: UITableViewCell {
             dateFormatter.dateFormat = "dd MMMM, HH:mm"
             dateLabel.text = dateFormatter.string(from: task.date ?? Date())
             backgroundColor = task.color
+            if task.isDone {
+                checkBoxButton.setImage(#imageLiteral(resourceName: "checkmark"), for: .normal)
+                let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: task.task ?? "")
+                attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
+                taskTextField.attributedText = attributeString
+            }
         }
     }
     
@@ -27,8 +33,6 @@ class ListFullscreenCell: UITableViewCell {
         button.addSize(size: .init(width: 48, height: 48))
         return button
     }()
-    
-    public var cav: CustomAccessoryView!
     
     public let taskTextField: UITextField = {
         let tf = UITextField()
