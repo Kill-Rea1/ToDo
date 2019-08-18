@@ -12,6 +12,7 @@ class TodayCell: BaseCollectionCell {
     
     public var task: Task! {
         didSet {
+            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: task.task ?? "")
             taskLabel.text = task.task
             listIndicator.backgroundColor = task.color
             let dateFormatter = DateFormatter()
@@ -20,10 +21,9 @@ class TodayCell: BaseCollectionCell {
             checkBoxButton.tintColor = task.color
             if task.isDone {
                 checkBoxButton.setImage(#imageLiteral(resourceName: "checked"), for: .normal)
-                let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: task.task ?? "")
                 attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
-                taskLabel.attributedText = attributeString
             }
+            taskLabel.attributedText = attributeString
         }
     }
     

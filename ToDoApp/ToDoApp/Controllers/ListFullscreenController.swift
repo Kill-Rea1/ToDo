@@ -179,7 +179,7 @@ extension ListFullscreenController: UITableViewDataSource, UITableViewDelegate {
         if indexPath.row == tasks.count {
             didAddNewTask()
         } else {
-            didCheckedTask(indexPath: indexPath)
+            didSelectAt(indexPath)
             sender.isUserInteractionEnabled = false
         }
     }
@@ -254,19 +254,25 @@ extension ListFullscreenController: UITextFieldDelegate {
         tableView.endUpdates()
     }
     
-    func didCheckedTask(indexPath: IndexPath) {
+    func didSelectAt(_ indexPath: IndexPath) {
+        let task = tasks[indexPath.item]
         guard let cell = tableView.cellForRow(at: indexPath) as? ListFullscreenCell else { return }
         let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: cell.taskTextField.text ?? "")
+        var newImage = #imageLiteral(resourceName: "unchecked")
+        if !task.isDone {
+            attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
+            newImage = #imageLiteral(resourceName: "checkmark")
+        }
         cell.taskTextField.text = ""
-        attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
+        
         let transition = CATransition()
         transition.type = CATransitionType.push
         transition.subtype = CATransitionSubtype.fromTop
         transition.duration = 0.3
+        
         cell.taskTextField.attributedText = attributeString
         cell.taskTextField.layer.add(transition, forKey: kCATransition)
-        cell.checkBoxButton.setImage(#imageLiteral(resourceName: "checkmark"), for: .normal)
-        let task = tasks[indexPath.row]
+        cell.checkBoxButton.setImage(newImage, for: .normal)
         task.isDone = !task.isDone
         CoreDataManager.shared.saveChanges()
     }

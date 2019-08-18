@@ -48,36 +48,21 @@ class TodayController: BaseCollectionController, UICollectionViewDelegateFlowLay
     fileprivate func didSelectTaskAt(_ indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? TodayCell else { return }
         let task = tasks[indexPath.item]
-        if task.isDone {
-            decheckedTaskAt(indexPath, cell: cell)
-        } else {
-            checkedTaskAt(indexPath, cell: cell)
+        let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: cell.taskLabel.text ?? "")
+        var newImage = #imageLiteral(resourceName: "unchecked")
+        if !task.isDone {
+            attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
+            newImage = #imageLiteral(resourceName: "checked")
         }
+        let transition = CATransition()
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromTop
+        transition.duration = 0.3
+        cell.taskLabel.attributedText = attributeString
+        cell.taskLabel.layer.add(transition, forKey: kCATransition)
+        cell.checkBoxButton.setImage(newImage, for: .normal)
         task.isDone = !task.isDone
         CoreDataManager.shared.saveChanges()
-    }
-    
-    fileprivate func decheckedTaskAt(_ indexPath: IndexPath, cell: TodayCell) {
-        let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: cell.taskLabel.text ?? "")
-        let transition = CATransition()
-        transition.type = CATransitionType.push
-        transition.subtype = CATransitionSubtype.fromTop
-        transition.duration = 0.3
-        cell.taskLabel.attributedText = attributeString
-        cell.taskLabel.layer.add(transition, forKey: kCATransition)
-        cell.checkBoxButton.setImage(#imageLiteral(resourceName: "unchecked"), for: .normal)
-    }
-    
-    fileprivate func checkedTaskAt(_ indexPath: IndexPath, cell: TodayCell) {
-        let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: cell.taskLabel.text ?? "")
-        attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
-        let transition = CATransition()
-        transition.type = CATransitionType.push
-        transition.subtype = CATransitionSubtype.fromTop
-        transition.duration = 0.3
-        cell.taskLabel.attributedText = attributeString
-        cell.taskLabel.layer.add(transition, forKey: kCATransition)
-        cell.checkBoxButton.setImage(#imageLiteral(resourceName: "checked"), for: .normal)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
