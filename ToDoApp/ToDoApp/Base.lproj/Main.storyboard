@@ -17,7 +17,34 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="9CJ-zc-tzU">
+                                <rect key="frame" x="147" y="389" width="121" height="28"/>
+                                <segments>
+                                    <segment title="First"/>
+                                    <segment title="Second"/>
+                                </segments>
+                            </segmentedControl>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CCB-Jl-LMe">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="6oe-Ak-76D">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="CCB-Jl-LMe" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="9pJ-hv-ZFB"/>
+                            <constraint firstItem="9CJ-zc-tzU" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="345" id="NrH-3G-8eg"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="CCB-Jl-LMe" secondAttribute="trailing" id="Y0X-II-7Po"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="CCB-Jl-LMe" secondAttribute="bottom" id="ZxM-RN-q9N"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="9CJ-zc-tzU" secondAttribute="bottom" constant="446" id="cWH-rJ-gSN"/>
+                            <constraint firstItem="CCB-Jl-LMe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="gvt-MP-G5B"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="9CJ-zc-tzU" secondAttribute="trailing" constant="146" id="oGW-PZ-EMW"/>
+                            <constraint firstItem="9CJ-zc-tzU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="147" id="oXv-eV-avC"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>

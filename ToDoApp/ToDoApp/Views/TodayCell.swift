@@ -75,6 +75,7 @@ class TodayCell: BaseCollectionCell {
     
     override func prepareForReuse() {
         checkBoxButton.setImage(#imageLiteral(resourceName: "unchecked"), for: .normal)
+        taskLabel.text = ""
     }
     
     fileprivate func separatorView() {
