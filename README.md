@@ -7,7 +7,7 @@ You allowed to create any list with any colour which open by touching.
 ### Techonologies 
  - MVC Architecture
  - CoreData by Apple for database
- - UI written with AutoLayout without storyboards
+ - UI is written using AutoLayout without storyboards
  
 ### Screenshots
 <img src="ToDoApp/Screenshots/main.png" width=400 alt='Main screen'> <img src="ToDoApp/Screenshots/new.png" width=400 alt='New list screen'>
